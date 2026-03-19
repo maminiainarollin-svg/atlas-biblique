@@ -246,7 +246,7 @@ body { font-family: 'Crimson Pro', Georgia, serif; color: var(--ink); }
     <!-- ===== MAP VIEW ===== -->
     <div id="map-view" class="view active">
       <div id="map-wrap">
-        <svg id="map-svg" viewBox="0 0 520 560" xmlns="http://www.w3.org/2000/svg">
+        <svg id="map-svg" viewBox="0 0 520 560" xmlns="http://www.w3.org/2000/svg" style="transition: all 0.6s ease;">
           <!-- Mer Méditerranée -->
           <rect x="0" y="0" width="110" height="560" fill="#5a9bc0" opacity="0.55"/>
           <!-- Mer Morte -->
@@ -257,6 +257,16 @@ body { font-family: 'Crimson Pro', Georgia, serif; color: var(--ink); }
           <path d="M280 198 Q282 255 292 286" stroke="#4a7fa5" stroke-width="2.5" fill="none"/>
           <!-- Désert Néguev -->
           <rect x="155" y="390" width="210" height="170" fill="#c8a96a" opacity="0.3" rx="6"/>
+          <!-- Égypte -->
+          <rect x="0" y="390" width="120" height="170" fill="#c8a96a" opacity="0.2" rx="4"/>
+          <text x="55" y="490" font-size="9" fill="#7a5c00" opacity="0.6" font-family="Cinzel, serif">ÉGYPTE</text>
+          <!-- Sinaï -->
+          <rect x="120" y="440" width="80" height="120" fill="#d4b896" opacity="0.25" rx="4"/>
+          <text x="158" y="530" font-size="8" fill="#7a5c00" opacity="0.6" text-anchor="middle" font-family="Cinzel, serif">SINAÏ</text>
+          <!-- Mésopotamie -->
+          <rect x="390" y="60" width="130" height="200" fill="#d4c896" opacity="0.2" rx="4"/>
+          <text x="455" y="100" font-size="9" fill="#7a5c00" opacity="0.6" text-anchor="middle" font-family="Cinzel, serif">MÉSO-</text>
+          <text x="455" y="112" font-size="9" fill="#7a5c00" opacity="0.6" text-anchor="middle" font-family="Cinzel, serif">POTAMIE</text>
           <!-- Labels géographiques -->
           <text x="52" y="190" font-size="8" fill="#1a4a7a" text-anchor="middle" transform="rotate(-90,52,190)" font-family="Cinzel, serif">MER MÉDITERRANÉE</text>
           <text x="292" y="332" font-size="7" fill="#1a4a7a" text-anchor="middle" font-family="Cinzel, serif">Mer</text>
@@ -855,6 +865,32 @@ function renderMapDots() {
   });
 }
 
+// ViewBox par filtre : [x, y, largeur, hauteur]
+const FILTER_VIEWS = {
+  'tous':    '0 0 520 560',
+  'Genèse':  '30 60 470 480',   // large — Mésopotamie à Canaan + Égypte
+  'Exode':   '0 380 340 180',   // Égypte + Sinaï + Néguev
+  'AT':      '110 140 310 360', // Canaan central
+  'NT':      '150 140 200 230', // Galilée + Judée
+};
+
+function animateViewBox(target) {
+  const svg = document.getElementById('map-svg');
+  const current = svg.getAttribute('viewBox').split(' ').map(Number);
+  const dest = target.split(' ').map(Number);
+  const steps = 30;
+  let step = 0;
+  clearInterval(window._vbAnim);
+  window._vbAnim = setInterval(() => {
+    step++;
+    const t = step / steps;
+    const ease = t < 0.5 ? 2*t*t : -1+(4-2*t)*t;
+    const vb = current.map((c, i) => Math.round(c + (dest[i] - c) * ease));
+    svg.setAttribute('viewBox', vb.join(' '));
+    if (step >= steps) clearInterval(window._vbAnim);
+  }, 16);
+}
+
 function placeMatchesFilter(p, filter) {
   if (filter === 'tous') return true;
   if (filter === 'AT') return p.era === 'AT' || p.era === 'both';
@@ -868,6 +904,7 @@ function setFilter(f, btn) {
   currentFilter = f;
   document.querySelectorAll('.fbtn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
+  animateViewBox(FILTER_VIEWS[f] || FILTER_VIEWS['tous']);
   renderMapDots();
   if (activePlace && placeMatchesFilter(PLACES[activePlace], f)) {
     renderPlaceDetail(activePlace);
