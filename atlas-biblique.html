@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#1a2e1a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Atlas Biblique">
+<meta name="description" content="Explorez la géographie biblique de manière interactive">
+<title>Atlas Biblique Interactif</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --parch: #f5ead0;
+  --parch2: #eedcb4;
+  --parch3: #e6ce96;
+  --ink: #2c1f0e;
+  --ink2: #4a3520;
+  --ink3: #6b5030;
+  --gold: #b8860b;
+  --gold2: #d4a017;
+  --olive: #556b2f;
+  --olive2: #6b8c3a;
+  --water: #4a7fa5;
+  --water2: #6ea8cc;
+  --sand: #c8a96a;
+  --red: #8b2020;
+  --purple: #5a3070;
+  --teal: #2a6e5a;
+  --r: 10px;
+  --shadow: 0 2px 12px rgba(44,31,14,0.18);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; background: var(--ink); }
+body { font-family: 'Crimson Pro', Georgia, serif; color: var(--ink); }
+
+/* ===== LAYOUT ===== */
+#app { display: flex; flex-direction: column; height: 100vh; height: 100dvh; background: var(--parch); }
+
+/* ===== HEADER ===== */
+#header {
+  background: var(--ink);
+  padding: 10px 16px 8px;
+  display: flex; align-items: center; gap: 12px;
+  border-bottom: 2px solid var(--gold);
+  flex-shrink: 0;
+}
+#header h1 {
+  font-family: 'Cinzel', serif;
+  font-size: 17px; font-weight: 600;
+  color: var(--gold2); letter-spacing: 0.04em;
+  flex: 1;
+}
+#header p { font-size: 11px; color: var(--parch3); letter-spacing: 0.06em; }
+
+/* ===== TABS ===== */
+#tabs {
+  display: flex; background: var(--ink2);
+  border-bottom: 1px solid var(--gold);
+  flex-shrink: 0; overflow-x: auto;
+  scrollbar-width: none;
+}
+#tabs::-webkit-scrollbar { display: none; }
+.tab {
+  font-family: 'Cinzel', serif;
+  font-size: 11px; font-weight: 600;
+  color: var(--parch3); letter-spacing: 0.05em;
+  padding: 9px 14px; cursor: pointer; white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+  background: none; border-top: none; border-left: none; border-right: none;
+}
+.tab.active { color: var(--gold2); border-bottom-color: var(--gold2); }
+
+/* ===== MAIN CONTENT ===== */
+#content { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
+.view { display: none; flex: 1; overflow: hidden; flex-direction: column; }
+.view.active { display: flex; }
+
+/* ===== MAP VIEW ===== */
+#map-view { flex-direction: row; }
+#map-wrap { flex: 1; position: relative; overflow: hidden; background: #a8c878; min-width: 0; }
+#map-svg { width: 100%; height: 100%; }
+
+#map-panel {
+  width: 260px; display: flex; flex-direction: column;
+  background: var(--parch); border-left: 1px solid var(--parch3);
+  flex-shrink: 0;
+}
+#map-panel-head {
+  padding: 10px 12px; background: var(--ink);
+  border-bottom: 1px solid var(--gold);
+}
+#map-panel-head h3 { font-family: 'Cinzel', serif; font-size: 13px; color: var(--gold2); }
+#map-panel-head p { font-size: 11px; color: var(--parch3); margin-top: 2px; }
+
+#filter-bar {
+  display: flex; gap: 5px; padding: 8px 10px;
+  border-bottom: 1px solid var(--parch3);
+  flex-wrap: wrap; background: var(--parch2);
+}
+.fbtn {
+  font-size: 10px; font-family: 'Cinzel', serif;
+  padding: 3px 8px; border-radius: 99px;
+  border: 1px solid var(--ink3); cursor: pointer;
+  color: var(--ink2); background: transparent;
+  transition: all 0.15s;
+}
+.fbtn.active { background: var(--ink); color: var(--gold2); border-color: var(--gold); }
+
+#place-detail { flex: 1; overflow-y: auto; padding: 12px; }
+.place-empty { text-align: center; color: var(--ink3); font-style: italic; font-size: 13px; margin-top: 30px; line-height: 1.7; }
+.place-name { font-family: 'Cinzel', serif; font-size: 16px; color: var(--ink); margin-bottom: 2px; }
+.place-loc { font-size: 11px; color: var(--ink3); margin-bottom: 8px; }
+.place-era { display: inline-block; font-size: 10px; padding: 2px 9px; border-radius: 99px; margin-bottom: 10px; font-family: 'Cinzel', serif; letter-spacing: 0.05em; }
+.era-at { background: #fff3cd; color: #7a5c00; border: 1px solid #d4a017; }
+.era-nt { background: #ddeeff; color: #1a4a7a; border: 1px solid #4a7fa5; }
+.era-both { background: #e8f5e8; color: #2a5a2a; border: 1px solid #556b2f; }
+.place-ctx {
+  font-size: 12px; color: var(--ink2); line-height: 1.6;
+  padding: 8px 10px; margin-bottom: 12px;
+  background: var(--parch2); border-left: 3px solid var(--gold);
+  font-style: italic;
+}
+.ev-card {
+  border: 1px solid var(--parch3); border-radius: var(--r);
+  padding: 9px 10px; margin-bottom: 9px; background: var(--parch);
+  cursor: pointer; transition: border-color 0.15s;
+}
+.ev-card:hover { border-color: var(--gold); }
+.ev-ref { font-size: 11px; color: var(--water); font-weight: 600; margin-bottom: 3px; font-family: 'Cinzel', serif; }
+.ev-title { font-size: 13px; font-weight: 600; color: var(--ink); }
+.ev-desc { font-size: 12px; color: var(--ink2); margin-top: 3px; line-height: 1.5; }
+.ev-hist { font-size: 11px; color: var(--ink3); margin-top: 5px; padding-top: 5px; border-top: 1px solid var(--parch3); line-height: 1.45; font-style: italic; }
+
+/* ===== PARCOURS VIEW ===== */
+#parcours-view { overflow: hidden; }
+#parc-tabs {
+  display: flex; gap: 0; background: var(--parch2);
+  border-bottom: 1px solid var(--parch3);
+  overflow-x: auto; scrollbar-width: none; flex-shrink: 0;
+}
+#parc-tabs::-webkit-scrollbar { display: none; }
+.ptab {
+  font-family: 'Cinzel', serif; font-size: 11px;
+  padding: 9px 14px; cursor: pointer;
+  color: var(--ink3); border-bottom: 2px solid transparent;
+  white-space: nowrap; background: none;
+  border-top: none; border-left: none; border-right: none;
+  transition: color 0.2s;
+}
+.ptab.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+#parc-body { flex: 1; display: flex; overflow: hidden; }
+#parc-map { flex: 1; position: relative; overflow: hidden; background: #a8c878; min-width: 0; }
+#parc-map-svg { width: 100%; height: 100%; }
+#parc-panel { width: 260px; display: flex; flex-direction: column; border-left: 1px solid var(--parch3); background: var(--parch); flex-shrink: 0; }
+#parc-panel-head { padding: 10px 12px; background: var(--ink); border-bottom: 1px solid var(--gold); }
+#parc-panel-head h3 { font-family: 'Cinzel', serif; font-size: 13px; color: var(--gold2); }
+#parc-panel-head p { font-size: 11px; color: var(--parch3); margin-top: 2px; }
+#parc-nav { display: flex; align-items: center; padding: 8px 10px; border-bottom: 1px solid var(--parch3); background: var(--parch2); gap: 8px; }
+#parc-nav button { font-family: 'Cinzel', serif; font-size: 11px; padding: 4px 10px; border: 1px solid var(--ink3); border-radius: var(--r); background: transparent; cursor: pointer; color: var(--ink2); }
+#parc-nav button:hover { background: var(--ink); color: var(--gold2); border-color: var(--gold); }
+#parc-counter { flex: 1; text-align: center; font-size: 11px; color: var(--ink3); font-family: 'Cinzel', serif; }
+#parc-content { flex: 1; overflow-y: auto; padding: 12px; }
+.step-badge { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 50%; font-family: 'Cinzel', serif; font-size: 12px; font-weight: 600; color: white; margin-bottom: 8px; }
+.step-place { font-family: 'Cinzel', serif; font-size: 15px; color: var(--ink); margin-bottom: 2px; }
+.step-ref { font-size: 11px; font-weight: 600; margin-bottom: 8px; font-family: 'Cinzel', serif; }
+.step-story { font-size: 13px; color: var(--ink); line-height: 1.7; margin-bottom: 10px; }
+.step-hist { font-size: 11px; color: var(--ink3); line-height: 1.55; padding: 8px 10px; background: var(--parch2); border-left: 3px solid var(--parch3); font-style: italic; }
+.step-hist strong { font-style: normal; color: var(--ink2); display: block; margin-bottom: 2px; }
+#mini-steps { display: flex; gap: 5px; padding: 8px 10px; border-top: 1px solid var(--parch3); flex-wrap: wrap; }
+.mini-s { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-family: 'Cinzel', serif; font-weight: 600; cursor: pointer; color: white; opacity: 0.45; border: none; transition: opacity 0.15s; }
+.mini-s.active { opacity: 1; }
+
+/* ===== SEARCH VIEW ===== */
+#search-view { background: var(--parch); overflow-y: auto; padding: 14px; }
+#search-wrap { display: flex; gap: 8px; margin-bottom: 14px; }
+#search-input {
+  flex: 1; font-family: 'Crimson Pro', serif; font-size: 15px;
+  padding: 9px 13px; border: 1px solid var(--parch3);
+  border-radius: var(--r); background: var(--parch2); color: var(--ink);
+}
+#search-input:focus { outline: none; border-color: var(--gold); }
+#search-input::placeholder { color: var(--ink3); font-style: italic; }
+#search-btn { font-family: 'Cinzel', serif; font-size: 12px; padding: 9px 14px; background: var(--ink); color: var(--gold2); border: none; border-radius: var(--r); cursor: pointer; }
+#search-results { display: flex; flex-direction: column; gap: 10px; }
+.sr-card {
+  background: var(--parch); border: 1px solid var(--parch3);
+  border-radius: var(--r); padding: 12px 14px; cursor: pointer;
+  transition: border-color 0.15s;
+}
+.sr-card:hover { border-color: var(--gold); }
+.sr-name { font-family: 'Cinzel', serif; font-size: 14px; color: var(--ink); margin-bottom: 3px; }
+.sr-tag { font-size: 11px; color: var(--ink3); margin-bottom: 6px; }
+.sr-preview { font-size: 12px; color: var(--ink2); line-height: 1.5; font-style: italic; }
+.sr-empty { text-align: center; color: var(--ink3); font-style: italic; padding: 30px 0; font-size: 14px; }
+
+/* ===== LANGUE ===== */
+#lang-bar { display: flex; gap: 6px; justify-content: flex-end; padding: 4px 10px; background: var(--ink2); }
+.lang-btn { font-family: 'Cinzel', serif; font-size: 10px; padding: 2px 8px; border-radius: 99px; border: 1px solid var(--gold); cursor: pointer; color: var(--parch3); background: transparent; }
+.lang-btn.active { background: var(--gold); color: var(--ink); }
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--parch2); }
+::-webkit-scrollbar-thumb { background: var(--parch3); border-radius: 3px; }
+
+/* ===== MOBILE RESPONSIVE ===== */
+@media (max-width: 600px) {
+  #map-view { flex-direction: column; }
+  #map-panel { width: 100%; max-height: 42vh; border-left: none; border-top: 1px solid var(--parch3); }
+  #parc-body { flex-direction: column; }
+  #parc-panel { width: 100%; max-height: 42vh; border-left: none; border-top: 1px solid var(--parch3); }
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- HEADER -->
+  <div id="header">
+    <div>
+      <h1>Atlas Biblique</h1>
+      <p>GÉOGRAPHIE SACRÉE INTERACTIVE</p>
+    </div>
+    <div id="lang-bar">
+      <button class="lang-btn active" onclick="setLang('fr')">FR</button>
+      <button class="lang-btn" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('mg')">MG</button>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div id="tabs">
+    <button class="tab active" onclick="showView('map',this)" id="tab-map">Carte</button>
+    <button class="tab" onclick="showView('parcours',this)" id="tab-parcours">Parcours</button>
+    <button class="tab" onclick="showView('search',this)" id="tab-search">Recherche</button>
+  </div>
+
+  <!-- CONTENT -->
+  <div id="content">
+
+    <!-- ===== MAP VIEW ===== -->
+    <div id="map-view" class="view active">
+      <div id="map-wrap">
+        <svg id="map-svg" viewBox="0 0 520 560" xmlns="http://www.w3.org/2000/svg">
+          <!-- Mer Méditerranée -->
+          <rect x="0" y="0" width="110" height="560" fill="#5a9bc0" opacity="0.55"/>
+          <!-- Mer Morte -->
+          <ellipse cx="292" cy="328" rx="19" ry="42" fill="#4a7fa5" opacity="0.75"/>
+          <!-- Mer de Galilée -->
+          <ellipse cx="280" cy="178" rx="14" ry="20" fill="#4a7fa5" opacity="0.75"/>
+          <!-- Jourdain -->
+          <path d="M280 198 Q282 255 292 286" stroke="#4a7fa5" stroke-width="2.5" fill="none"/>
+          <!-- Désert Néguev -->
+          <rect x="155" y="390" width="210" height="170" fill="#c8a96a" opacity="0.3" rx="6"/>
+          <!-- Labels géographiques -->
+          <text x="52" y="190" font-size="8" fill="#1a4a7a" text-anchor="middle" transform="rotate(-90,52,190)" font-family="Cinzel, serif">MER MÉDITERRANÉE</text>
+          <text x="292" y="332" font-size="7" fill="#1a4a7a" text-anchor="middle" font-family="Cinzel, serif">Mer</text>
+          <text x="292" y="341" font-size="7" fill="#1a4a7a" text-anchor="middle" font-family="Cinzel, serif">Morte</text>
+          <text x="280" y="181" font-size="7" fill="#1a4a7a" text-anchor="middle" font-family="Cinzel, serif">Galilée</text>
+          <text x="218" y="445" font-size="9" fill="#7a5c00" opacity="0.7" font-family="Cinzel, serif">NÉGUEV</text>
+          <text x="195" y="235" font-size="8" fill="#4a3520" opacity="0.45" font-family="Cinzel, serif">SAMARIE</text>
+          <text x="195" y="305" font-size="8" fill="#4a3520" opacity="0.45" font-family="Cinzel, serif">JUDÉE</text>
+          <text x="195" y="190" font-size="8" fill="#4a3520" opacity="0.45" font-family="Cinzel, serif">GALILÉE</text>
+          <!-- Points -->
+          <g id="map-dots"></g>
+        </svg>
+      </div>
+      <div id="map-panel">
+        <div id="map-panel-head">
+          <h3 id="mp-title">Carte biblique</h3>
+          <p id="mp-sub">Sélectionne un lieu</p>
+        </div>
+        <div id="filter-bar">
+          <button class="fbtn active" onclick="setFilter('tous',this)">Tous</button>
+          <button class="fbtn" onclick="setFilter('AT',this)">Ancien T.</button>
+          <button class="fbtn" onclick="setFilter('NT',this)">Nouveau T.</button>
+        </div>
+        <div id="place-detail"><p class="place-empty">Touche un lieu sur la carte pour explorer les événements bibliques et leur contexte historique.</p></div>
+      </div>
+    </div>
+
+    <!-- ===== PARCOURS VIEW ===== -->
+    <div id="parcours-view" class="view">
+      <div id="parc-tabs">
+        <button class="ptab active" onclick="setParcours(0,this)">Abraham</button>
+        <button class="ptab" onclick="setParcours(1,this)">Jésus</button>
+        <button class="ptab" onclick="setParcours(2,this)">Exode</button>
+        <button class="ptab" onclick="setParcours(3,this)">Paul</button>
+      </div>
+      <div id="parc-body">
+        <div id="parc-map">
+          <svg id="parc-map-svg" viewBox="0 0 520 560" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="520" height="560" fill="#a8c878"/>
+            <rect x="0" y="0" width="110" height="560" fill="#5a9bc0" opacity="0.5"/>
+            <ellipse cx="292" cy="328" rx="19" ry="42" fill="#4a7fa5" opacity="0.7"/>
+            <ellipse cx="280" cy="178" rx="14" ry="20" fill="#4a7fa5" opacity="0.7"/>
+            <path d="M280 198 Q282 255 292 286" stroke="#4a7fa5" stroke-width="2" fill="none"/>
+            <rect x="155" y="390" width="210" height="170" fill="#c8a96a" opacity="0.28" rx="6"/>
+            <text x="52" y="190" font-size="8" fill="#1a4a7a" text-anchor="middle" transform="rotate(-90,52,190)" font-family="Cinzel, serif">MER MÉDITERRANÉE</text>
+            <g id="parc-lines"></g>
+            <g id="parc-dots"></g>
+          </svg>
+        </div>
+        <div id="parc-panel">
+          <div id="parc-panel-head">
+            <h3 id="parc-title">Parcours</h3>
+            <p id="parc-desc"></p>
+          </div>
+          <div id="parc-nav">
+            <button onclick="prevStep()">← Préc.</button>
+            <span id="parc-counter"></span>
+            <button onclick="nextStep()">Suiv. →</button>
+          </div>
+          <div id="parc-content"></div>
+          <div id="mini-steps"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SEARCH VIEW ===== -->
+    <div id="search-view" class="view">
+      <div id="search-wrap">
+        <input type="text" id="search-input" placeholder="Lieu, personnage, thème..." oninput="doSearch(this.value)">
+        <button id="search-btn" onclick="doSearch(document.getElementById('search-input').value)">Chercher</button>
+      </div>
+      <div id="search-results"><p class="sr-empty">Entrez un nom de lieu ou de personnage (ex: Abraham, Paul, Jéricho...)</p></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ============================================================
+// DONNÉES BIBLIQUES
+// ============================================================
+const I18N = {
+  fr: { map:'Carte', parcours:'Parcours', search:'Recherche', select:'Sélectionne un lieu', hint:'Touche un lieu sur la carte pour explorer les événements bibliques.', empty:'Entrez un nom de lieu ou de personnage...', context:'Contexte historique', people:'Personnages liés' },
+  en: { map:'Map', parcours:'Journeys', search:'Search', select:'Select a place', hint:'Tap a place on the map to explore biblical events.', empty:'Enter a place or person name...', context:'Historical context', people:'Related people' },
+  mg: { map:'Sarintany', parcours:'Diandalana', search:'Fikarohana', select:'Safidio ny toerana', hint:'Tsindrio ny toerana amin\'ny sarintany hahita ny zava-niseho.', empty:'Ampidiro ny anaran\'ny toerana na olona...', context:'Tantara', people:'Olona mifandray' }
+};
+let lang = 'fr';
+let currentFilter = 'tous';
+let currentParcours = 0;
+let currentStep = 0;
+let activePlace = null;
+
+const PLACES = {
+  jerusalem: {
+    x:265, y:310,
+    name:{fr:'Jérusalem',en:'Jerusalem',mg:'Jerosalema'},
+    modern:{fr:'Capitale d\'Israël',en:'Capital of Israel',mg:'Renivohitr\'i Israely'},
+    era:'both',
+    context:{fr:'Ville sainte des trois grandes religions. Fondée comme capitale par David vers 1000 av. J.-C. Carrefour des routes entre l\'Égypte et la Mésopotamie.',en:'Holy city of three major religions. Founded as capital by David around 1000 BC. Crossroads between Egypt and Mesopotamia.',mg:'Tanàna masina ho an\'ny fivavahana lehibe telo. Naorin\'i Davida ho renivohitra tokony ho 1000 tal. J.-K.'},
+    people:['David','Salomon','Jésus','Paul'],
+    color:'#8b2020',
+    events:[
+      {ref:'2 Sam 5:6-9',title:{fr:'David prend la ville',en:'David takes the city',mg:'Nalain\'i Davida ny tanàna'},desc:{fr:'David s\'empare de la forteresse jébusienne.',en:'David captures the Jebusite fortress.',mg:'Nalavin\'i Davida ny tany amin\'ny Jebosita.'},hist:{fr:'Vers 1000 av. J.-C. — unification du royaume d\'Israël.',en:'Around 1000 BC — unification of Israel.',mg:'Tokony ho 1000 tal. J.-K. — fampiraisana ny fanjakana.'},era:'AT'},
+      {ref:'1 Rois 6',title:{fr:'Temple de Salomon',en:'Solomon\'s Temple',mg:'Tempolin\'i Solomona'},desc:{fr:'Construction du premier Temple, résidence de l\'arche d\'alliance.',en:'Construction of the first Temple, home of the Ark.',mg:'Nanorina ny Tempoly voalohany.'},hist:{fr:'Vers 966 av. J.-C. — apogée de la monarchie.',en:'Around 966 BC — peak of the monarchy.',mg:'Tokony ho 966 tal. J.-K.'},era:'AT'},
+      {ref:'Luc 19:28-44',title:{fr:'Entrée triomphale',en:'Triumphal entry',mg:'Fidirana am-boninahitra'},desc:{fr:'Jésus entre sur un âne, acclamé comme Messie.',en:'Jesus enters on a donkey, hailed as Messiah.',mg:'Niditra an\'ampondra i Jesoa, notononina ho Mesia.'},hist:{fr:'Printemps 30 ap. J.-C. — sous occupation romaine.',en:'Spring AD 30 — under Roman occupation.',mg:'Lohataona 30 A.D. — teo ambanin\'ny fanjanahana romana.'},era:'NT'},
+      {ref:'Actes 2',title:{fr:'Pentecôte',en:'Pentecost',mg:'Pentekosta'},desc:{fr:'Descente du Saint-Esprit, naissance de l\'Église.',en:'Descent of the Holy Spirit, birth of the Church.',mg:'Nidina ny Fanahy Masina, nateraka ny Fiangonana.'},hist:{fr:'50 jours après Pâques 30 ap. J.-C.',en:'50 days after Passover AD 30.',mg:'50 andro taorian\'ny Paka 30 A.D.'},era:'NT'}
+    ]
+  },
+  bethleem: {
+    x:263, y:326,
+    name:{fr:'Bethléem',en:'Bethlehem',mg:'Betlehema'},
+    modern:{fr:'Cisjordanie',en:'West Bank',mg:'Ranomasimbe Andrefana'},
+    era:'both',
+    context:{fr:'Petite bourgade agricole à 8 km de Jérusalem. Signifie "maison du pain". Ville ancestrale de la tribu de Juda.',en:'Small agricultural town 8km from Jerusalem. Means "house of bread". Ancestral town of the tribe of Judah.',mg:'Tanàna kely 8 km avy amin\'i Jerosalema. Midika hoe "trano mofo".'},
+    people:['Ruth','David','Jésus','Marie'],
+    color:'#5a3070',
+    events:[
+      {ref:'1 Sam 16',title:{fr:'Onction de David',en:'Anointing of David',mg:'Nohosoran\'i Davida'},desc:{fr:'Samuel oint David, fils de Jessé, comme futur roi.',en:'Samuel anoints David, son of Jesse, as future king.',mg:'Nanosotra an\'i Davida ho mpanjaka ho avy i Samoela.'},hist:{fr:'Vers 1025 av. J.-C. — Saül règne encore.',en:'Around 1025 BC — Saul still reigning.',mg:'Tokony ho 1025 tal. J.-K.'},era:'AT'},
+      {ref:'Luc 2:1-20',title:{fr:'Naissance de Jésus',en:'Birth of Jesus',mg:'Nahaterahan\'i Jesoa'},desc:{fr:'Marie et Joseph arrivent pour le recensement ; Jésus naît dans une étable.',en:'Mary and Joseph arrive for the census; Jesus is born in a stable.',mg:'Tonga ho an\'ny fandaminana i Maria sy Josefa; teraka an\'atoandro i Jesoa.'},hist:{fr:'4-6 av. J.-C. — recensement sous Auguste.',en:'4-6 BC — census under Augustus.',mg:'4-6 tal. J.-K. — fanisana notarihin\'i Aogososy.'},era:'NT'}
+    ]
+  },
+  nazareth: {
+    x:252, y:193,
+    name:{fr:'Nazareth',en:'Nazareth',mg:'Nazareta'},
+    modern:{fr:'Nord d\'Israël',en:'Northern Israel',mg:'Avaratra Israely'},
+    era:'NT',
+    context:{fr:'Petit village galiléen d\'environ 400 habitants au 1er siècle. Non mentionné dans l\'AT — d\'où le scepticisme de Nathanaël (Jean 1:46).',en:'Small Galilean village of about 400 people in the 1st century. Not mentioned in the OT — hence Nathanael\'s skepticism.',mg:'Vohikely galiliana misy olona 400 teo amin\'ny taonjato voalohany.'},
+    people:['Jésus','Marie','Joseph'],
+    color:'#2a6e5a',
+    events:[
+      {ref:'Luc 1:26-38',title:{fr:'Annonciation',en:'Annunciation',mg:'Fampahafantarana'},desc:{fr:'Gabriel annonce à Marie sa conception miraculeuse.',en:'Gabriel announces to Mary her miraculous conception.',mg:'Nanambara tamin\'i Maria ny fiterahany mahagaga i Gabriela.'},hist:{fr:'~5 av. J.-C. — sous Hérode le Grand.',en:'~5 BC — under Herod the Great.',mg:'~5 tal. J.-K. — teo ambanin\'i Heroda.'},era:'NT'},
+      {ref:'Luc 4:16-30',title:{fr:'Rejeté à Nazareth',en:'Rejected at Nazareth',mg:'Nolavina tany Nazareta'},desc:{fr:'Jésus lit Ésaïe 61 ; ses compatriotes veulent le précipiter.',en:'Jesus reads Isaiah 61; townspeople try to throw him off a cliff.',mg:'Namaky Isaia 61 i Jesoa; ny olona namany te hikapoka azy.'},hist:{fr:'~27 ap. J.-C. — début du ministère public.',en:'~AD 27 — start of public ministry.',mg:'~27 A.D. — nanomboka ny fanompoana ampahibemaso.'},era:'NT'}
+    ]
+  },
+  capharnaum: {
+    x:292, y:163,
+    name:{fr:'Capharnaüm',en:'Capernaum',mg:'Kapernaomy'},
+    modern:{fr:'Rive nord de la mer de Galilée',en:'North shore of Sea of Galilee',mg:'Amoron\'i Galilia avaratra'},
+    era:'NT',
+    context:{fr:'Ville de pêcheurs et poste de douane. Environ 1 500 habitants. Jésus en fit sa "propre ville" après avoir quitté Nazareth.',en:'Fishing town and customs post. About 1,500 inhabitants. Jesus made it his "own city" after leaving Nazareth.',mg:'Tanànan\'ny mpanjono sy toby fanafarana. Olona 1500 teo.'},
+    people:['Jésus','Pierre','André','Matthieu'],
+    color:'#2a6e5a',
+    events:[
+      {ref:'Marc 1:21-28',title:{fr:'Guérison en synagogue',en:'Healing in synagogue',mg:'Fanasitranana ao am-pisangambadiana'},desc:{fr:'Jésus délivre un possédé devant l\'assemblée stupéfaite.',en:'Jesus delivers a possessed man before an astonished assembly.',mg:'Nanafaka ny demonia anankiray i Jesoa teo anatrehan\'ny fiangonana.'},hist:{fr:'Sabbat ~27 ap. J.-C.',en:'Sabbath ~AD 27.',mg:'Sabata ~27 A.D.'},era:'NT'},
+      {ref:'Marc 2:1-12',title:{fr:'Guérison du paralytique',en:'Healing of the paralytic',mg:'Fanasitranana ny malemy an-tongotra'},desc:{fr:'Quatre amis percent le toit pour amener leur ami à Jésus.',en:'Four friends break through the roof to bring their friend to Jesus.',mg:'Namaky ny tafon-trano ny sakaiza efa-lahy hitondra ny namany ho amin\'i Jesoa.'},hist:{fr:'Les maisons de l\'époque : toits en chaume facilement ouvrables.',en:'Houses of the time had thatch roofs easily opened.',mg:'Ny trano tamin\'izany andro izany dia niara-nitondra ny tafony.'},era:'NT'}
+    ]
+  },
+  jericho: {
+    x:296, y:286,
+    name:{fr:'Jéricho',en:'Jericho',mg:'Jeriko'},
+    modern:{fr:'Cisjordanie — plus vieille ville du monde',en:'West Bank — oldest city in the world',mg:'Tanàna tranainy indrindra eran-tany'},
+    era:'both',
+    context:{fr:'Habitée depuis 9000 av. J.-C. Située à 250 m sous le niveau de la mer. La route Jérusalem-Jéricho descend de 1000 m en 27 km.',en:'Inhabited since 9000 BC. Located 250m below sea level. The Jerusalem-Jericho road descends 1000m in 27km.',mg:'Nonenan\'olona hatramin\'ny 9000 tal. J.-K. 250 metatra ambany ny ranomasina.'},
+    people:['Josué','Rahab','Zachée','Bartimée'],
+    color:'#556b2f',
+    events:[
+      {ref:'Jos 6',title:{fr:'Chute des murs',en:'Fall of the walls',mg:'Nirodana ny mandan-tanàna'},desc:{fr:'Les murailles s\'effondrent après 7 jours de marche et 7 sonneries.',en:'The walls fall after 7 days of marching and 7 trumpet blasts.',mg:'Nirodana ny mandan-tanàna taorian\'ny nandeha 7 andro sy ny fitsofana trompetra 7 indray.'},hist:{fr:'~1400 av. J.-C. — destruction attestée archéologiquement.',en:'~1400 BC — archaeologically attested destruction.',mg:'~1400 tal. J.-K. — voaporofo ara-bakiteny.'},era:'AT'},
+      {ref:'Luc 19:1-10',title:{fr:'Zachée',en:'Zacchaeus',mg:'Zakeo'},desc:{fr:'Jésus invite le collecteur d\'impôts perché dans un sycomore.',en:'Jesus invites the tax collector perched in a sycamore tree.',mg:'Nanasa an\'i Zakeo i Jesoa, ilay mpamory hetra izay niakatra tamin\'ny aviavy.'},hist:{fr:'~29 ap. J.-C. — les publicains haïs comme collaborateurs de Rome.',en:'~AD 29 — tax collectors hated as Roman collaborators.',mg:'~29 A.D. — ny mpamory hetra dia nankahala satria nampanapaka Roma.'},era:'NT'}
+    ]
+  },
+  hebron: {
+    x:252, y:350,
+    name:{fr:'Hébron',en:'Hebron',mg:'Hebrona'},
+    modern:{fr:'Cisjordanie',en:'West Bank',mg:'Ranomasimbe Andrefana'},
+    era:'AT',
+    context:{fr:'L\'une des plus anciennes villes encore habitées. La grotte de Macpéla abrite les tombes traditionnelles des Patriarches.',en:'One of the oldest continuously inhabited cities. The Cave of Machpelah holds the traditional tombs of the Patriarchs.',mg:'Iray amin\'ireo tanàna tranainy indrindra mbola onenan\'olona. Misy ny fasandriny ny Patriarka ao am-bangan\'i Makpela.'},
+    people:['Abraham','Sara','Isaac','Jacob','David'],
+    color:'#556b2f',
+    events:[
+      {ref:'Gen 13:18',title:{fr:'Abraham à Hébron',en:'Abraham at Hebron',mg:'Abrahama tany Hebrona'},desc:{fr:'Abraham s\'installe près des chênes de Mambré.',en:'Abraham settles near the oaks of Mamre.',mg:'Nitoetra teo akaikin\'ny hazo oaka Mamre i Abrahama.'},hist:{fr:'~2000 av. J.-C. — migration d\'Ur vers Canaan.',en:'~2000 BC — migration from Ur to Canaan.',mg:'~2000 tal. J.-K. — niala tao Ora nankany Kanana.'},era:'AT'},
+      {ref:'2 Sam 2:4',title:{fr:'David roi à Hébron',en:'David king at Hebron',mg:'Davida mpanjaka tany Hebrona'},desc:{fr:'David est oint roi de Juda avant Jérusalem.',en:'David is anointed king of Judah before Jerusalem.',mg:'Nanosotra an\'i Davida ho Mpanjakan\'i Joda i Samoela.'},hist:{fr:'~1010 av. J.-C. — il régnera 7 ans à Hébron.',en:'~1010 BC — he will reign 7 years at Hebron.',mg:'~1010 tal. J.-K. — nanjaka 7 taona tany Hebrona.'},era:'AT'}
+    ]
+  },
+  beersheba: {
+    x:230, y:398,
+    name:{fr:'Beersheba',en:'Beersheba',mg:'Beeroseba'},
+    modern:{fr:'Désert du Néguev',en:'Negev Desert',mg:'Efitra Negeva'},
+    era:'AT',
+    context:{fr:'"De Dan à Beersheba" délimite Israël. Carrefour des routes caravanières vers l\'Égypte et l\'Arabie.',en:'"From Dan to Beersheba" defines Israel\'s extent. Crossroads of caravan routes to Egypt and Arabia.',mg:'"Avy amin\'i Dana ka hatrany Beeroseba" no feran\'i Israely.'},
+    people:['Abraham','Agar','Isaac','Élie'],
+    color:'#556b2f',
+    events:[
+      {ref:'Gen 21:14-19',title:{fr:'Agar dans le désert',en:'Hagar in the desert',mg:'Hagara tany efitra'},desc:{fr:'Agar errante ; Dieu lui montre un puits pour sauver Ismaël.',en:'Hagar wandering; God shows her a well to save Ishmael.',mg:'Nandroahandroa i Hagara; naneho lavaka rano i Andriamanitra.'},hist:{fr:'~1900 av. J.-C. — la survie dépendait des puits.',en:'~1900 BC — survival depended on wells.',mg:'~1900 tal. J.-K. — niankina tamin\'ny lavaka rano ny fahavelomana.'},era:'AT'},
+      {ref:'1 Rois 19:3-8',title:{fr:'Fuite d\'Élie',en:'Elijah\'s flight',mg:'Nandositra i Elia'},desc:{fr:'Épuisé, Élie s\'effondre sous un genêt ; un ange le nourrit.',en:'Exhausted, Elijah collapses under a broom tree; an angel feeds him.',mg:'Nibanjina teo ambanin\'ny karambitsy i Elia; nameloman\'ny anjely.'},hist:{fr:'~850 av. J.-C. — menacé par Jézabel après le Carmel.',en:'~850 BC — threatened by Jezebel after Mount Carmel.',mg:'~850 tal. J.-K. — nosarotin\'i Jezabela taorian\'ny Karmela.'},era:'AT'}
+    ]
+  },
+  sichem: {
+    x:258, y:262,
+    name:{fr:'Sichem',en:'Shechem',mg:'Sekema'},
+    modern:{fr:'Naplouse, Cisjordanie',en:'Nablus, West Bank',mg:'Nablus, Ranomasimbe Andrefana'},
+    era:'both',
+    context:{fr:'Premier lieu saint d\'Abraham en Canaan. Carrefour entre le mont Ébal et le mont Garizim.',en:'Abraham\'s first holy place in Canaan. Crossroads between Mount Ebal and Mount Gerizim.',mg:'Toerana masina voalohany nosekin\'i Abrahama tany Kanana.'},
+    people:['Abraham','Jacob','Josué','Jésus'],
+    color:'#556b2f',
+    events:[
+      {ref:'Gen 12:6-7',title:{fr:'Première étape d\'Abraham',en:'Abraham\'s first stop',mg:'Toerana nitsaharan\'i Abrahama voalohany'},desc:{fr:'Dieu apparaît à Abraham au chêne de Moré.',en:'God appears to Abraham at the oak of Moreh.',mg:'Niseho tamin\'i Abrahama teo amin\'ny hazo oaka Morea i Andriamanitra.'},hist:{fr:'~2000 av. J.-C. — première théophanie en Canaan.',en:'~2000 BC — first theophany in Canaan.',mg:'~2000 tal. J.-K. — fisehoana voalohany tao Kanana.'},era:'AT'},
+      {ref:'Jean 4:1-42',title:{fr:'La Samaritaine',en:'Woman at the Well',mg:'Vehivavy Samaritana'},desc:{fr:'Jésus révèle à une femme rejetée qu\'il est le Messie.',en:'Jesus reveals to a rejected woman that he is the Messiah.',mg:'Naneho tamin\'ny vehivavy iray nolavin\'ny olona fa Mesia izy i Jesoa.'},hist:{fr:'~28 ap. J.-C. — hostilité entre Juifs et Samaritains depuis 722 av. J.-C.',en:'~AD 28 — hostility between Jews and Samaritans since 722 BC.',mg:'~28 A.D. — fifandrafiana Jody sy Samaritana hatramin\'ny 722 tal. J.-K.'},era:'NT'}
+    ]
+  },
+  damas: {
+    x:352, y:112,
+    name:{fr:'Damas',en:'Damascus',mg:'Damaskosy'},
+    modern:{fr:'Capitale de la Syrie',en:'Capital of Syria',mg:'Renivohitr\'i Syria'},
+    era:'both',
+    context:{fr:'Considérée comme la plus ancienne capitale encore habitée. Mentionnée 50 fois dans la Bible.',en:'Considered the oldest continuously inhabited capital. Mentioned 50 times in the Bible.',mg:'Atao hoe renivohitra tranainy indrindra mbola misy olona. Voatonona 50 indray ao amin\'ny Baiboly.'},
+    people:['Abraham','Paul','Ananias'],
+    color:'#b8860b',
+    events:[
+      {ref:'Actes 9:1-19',title:{fr:'Conversion de Paul',en:'Paul\'s conversion',mg:'Niovan\'i Paoly fo'},desc:{fr:'Sur le chemin de Damas, Paul est renversé par une lumière éblouissante.',en:'On the road to Damascus, Paul is struck by a blinding light.',mg:'Teo an-dalana mankany Damaskosy, nianjera i Paoly nahitan\'ny fahazavana.'},hist:{fr:'~34 ap. J.-C. — événement le plus décisif après la résurrection.',en:'~AD 34 — most decisive event after the resurrection.',mg:'~34 A.D. — zava-nitranga lehibe indrindra taorian\'ny nitsangana.'},era:'NT'}
+    ]
+  }
+};
+
+const PARCOURS_DATA = [
+  {
+    id:'abraham', name:{fr:'Sur les pas d\'Abraham',en:'In Abraham\'s Footsteps',mg:'Araka ny diandalanan\'i Abrahama'},
+    desc:{fr:'~2000-1800 av. J.-C. · 6 étapes',en:'~2000-1800 BC · 6 steps',mg:'~2000-1800 tal. J.-K. · dingana 6'},
+    color:'#b8860b',
+    steps:[
+      {place:{fr:'Haran',en:'Haran',mg:'Harana'},x:460,y:88,ref:'Gen 12:1-4',
+       story:{fr:'Dieu appelle Abram à Haran : "Va vers le pays que je te montrerai." À 75 ans, il obéit et part avec Sara, Lot, et tous ses biens.',en:'God calls Abram at Haran: "Go to the land I will show you." At 75 he obeys and leaves with Sarai, Lot, and all his possessions.',mg:'Niantso an\'i Abrama tany Harana i Andriamanitra: "Mandehana ho any amin\'ny tany izay hasehoko anao." Niara-niala i Abrama sy Saraia sy Lota.'},
+       hist:{fr:'Haran (actuelle Turquie) était un carrefour caravannier entre la Mésopotamie et la Méditerranée.',en:'Haran (modern Turkey) was a caravan crossroads between Mesopotamia and the Mediterranean.',mg:'Haran (Torkia ankehitriny) dia farihy karamanà teo anelanelan\'ny Mesopotamia sy ny Ranomasina Mediterane.'}},
+      {place:{fr:'Sichem',en:'Shechem',mg:'Sekema'},x:258,y:262,ref:'Gen 12:6-7',
+       story:{fr:'Première étape en Canaan. Au chêne de Moré, Dieu apparaît : "C\'est à ta postérité que je donnerai ce pays." Abraham y bâtit son premier autel.',en:'First stop in Canaan. At the oak of Moreh, God appears: "To your offspring I will give this land." Abraham builds his first altar.',mg:'Toerana voalohany nitsaharan\'i Abrahama tao Kanana. Nanorina alitara voalohany i Abrahama.'},
+       hist:{fr:'~2000 av. J.-C. — première théophanie en Canaan.',en:'~2000 BC — first theophany in Canaan.',mg:'~2000 tal. J.-K. — fisehoana voalohany tao Kanana.'}},
+      {place:{fr:'Béthel',en:'Bethel',mg:'Betela'},x:256,y:288,ref:'Gen 12:8',
+       story:{fr:'Abraham plante sa tente entre Béthel et Aï, bâtit un autel et invoque le nom de l\'Éternel.',en:'Abraham pitches his tent between Bethel and Ai, builds an altar and calls on the name of the Lord.',mg:'Natsangany ny lainy teo anelanelan\'i Betela sy Ai, ary nanorina alitara i Abrahama.'},
+       hist:{fr:'Béthel (Maison de Dieu) deviendra un des grands sanctuaires d\'Israël.',en:'Bethel (House of God) will become one of Israel\'s great sanctuaries.',mg:'Betela (Tranon\'Andriamanitra) ho lasa fitoerana masina lehibe.'}},
+      {place:{fr:'Égypte',en:'Egypt',mg:'Egypta'},x:68,y:478,ref:'Gen 12:10-20',
+       story:{fr:'Une famine pousse Abraham vers l\'Égypte. Il présente Sara comme sa sœur. Pharaon intervient et Abraham repart enrichi.',en:'Famine drives Abraham to Egypt. He presents Sarah as his sister. Pharaoh intervenes and Abraham leaves enriched.',mg:'Niterahan\'ny mosary i Abrahama ka nankany Egypta. Nolazainy ho anabavy i Saraia.'},
+       hist:{fr:'La descente en Égypte préfigure celle de Jacob et l\'Exode.',en:'The descent into Egypt foreshadows Jacob\'s and the Exodus.',mg:'Ny nidina tany Egypta dia hevitra aloha ny an\'i Jakoba sy ny Fivoahana.'}},
+      {place:{fr:'Hébron',en:'Hebron',mg:'Hebrona'},x:252,y:350,ref:'Gen 13:18',
+       story:{fr:'Après la séparation d\'avec Lot, Abraham s\'installe à Hébron. C\'est là que Dieu renouvelle l\'alliance et promet un fils.',en:'After separating from Lot, Abraham settles at Hebron. Here God renews the covenant and promises a son.',mg:'Taorian\'ny nisarahana tamin\'i Lota, nipetraka tany Hebrona i Abrahama. Nanamafy ny fanekena i Andriamanitra.'},
+       hist:{fr:'Abraham vivra à Hébron le reste de sa vie.',en:'Abraham will spend the rest of his life at Hebron.',mg:'Tany Hebrona no nitoeran\'i Abrahama ny andron\'ny fiainany.'}},
+      {place:{fr:'Morija (Jérusalem)',en:'Moriah (Jerusalem)',mg:'Moria (Jerosalema)'},x:265,y:310,ref:'Gen 22',
+       story:{fr:'Sommet de la foi : Dieu demande à Abraham d\'offrir Isaac. Au moment décisif, l\'ange retient la main d\'Abraham. "L\'Éternel pourvoira."',en:'Summit of faith: God asks Abraham to offer Isaac. At the decisive moment, the angel holds back Abraham\'s hand. "The Lord will provide."',mg:'Tampon\'ny finoana: nangataka an\'i Abrahama hanao fanatitra an\'i Isaka i Andriamanitra. Nihazona ny tanan\'i Abrahama ny anjely.'},
+       hist:{fr:'La tradition identifie Morija au rocher du Temple de Jérusalem.',en:'Tradition identifies Moriah with the Temple Mount in Jerusalem.',mg:'Ny fomba amam-panaon\'ny olona dia manambara fa Moria no vatolampy any Jerosalema.'}},
+    ]
+  },
+  {
+    id:'jesus', name:{fr:'Ministère de Jésus',en:'Ministry of Jesus',mg:'Fanompoavan\'i Jesoa'},
+    desc:{fr:'~27-30 ap. J.-C. · 6 étapes',en:'~AD 27-30 · 6 steps',mg:'~27-30 A.D. · dingana 6'},
+    color:'#2a6e5a',
+    steps:[
+      {place:{fr:'Nazareth',en:'Nazareth',mg:'Nazareta'},x:252,y:193,ref:'Luc 4:16-30',
+       story:{fr:'Jésus commence son ministère dans sa ville natale. Il lit Ésaïe 61 : "L\'Esprit du Seigneur est sur moi." Ses compatriotes veulent le précipiter du haut de la falaise.',en:'Jesus begins his ministry in his hometown. He reads Isaiah 61: "The Spirit of the Lord is upon me." Townspeople try to throw him off a cliff.',mg:'Nanomboka ny fanompoavany tany an-tanàna nahaterahany i Jesoa. Namaky Isaia 61 izy. Te hikapoka azy ny mpiray tanàna.'},
+       hist:{fr:'~27 ap. J.-C. — le rejet inaugure la dynamique du ministère.',en:'~AD 27 — rejection inaugurates the dynamic of the ministry.',mg:'~27 A.D. — ny fanilihana dia manomboka ny lala-kariky.'}},
+      {place:{fr:'Capharnaüm',en:'Capernaum',mg:'Kapernaomy'},x:292,y:163,ref:'Matt 4:13-17',
+       story:{fr:'Jésus s\'établit à Capharnaüm, sa "propre ville". Guérisons, enseignements, appel des premiers disciples au bord du lac.',en:'Jesus settles in Capernaum, his "own city." Healings, teachings, calling of first disciples by the lake.',mg:'Nipetraka tany Kapernaomy i Jesoa. Nanasitrana, nampianatra, ary niantso mpianatra voalohany teo amoron\'ny farihy.'},
+       hist:{fr:'~27 ap. J.-C. — carrefour commercial sur la route de Damas.',en:'~AD 27 — commercial crossroads on the road to Damascus.',mg:'~27 A.D. — toerana mifampiresaka amin\'ny lalana mankany Damaskosy.'}},
+      {place:{fr:'Sichem (puits de Jacob)',en:'Shechem (Jacob\'s Well)',mg:'Sekema (lavaka rano an\'i Jakoba)'},x:258,y:262,ref:'Jean 4:1-42',
+       story:{fr:'Jésus s\'arrête au puits de Jacob. Il parle à une Samaritaine rejetée et lui révèle qu\'il est le Messie.',en:'Jesus stops at Jacob\'s Well. He speaks to a rejected Samaritan woman and reveals he is the Messiah.',mg:'Nijanona teo am-pantsakana an\'i Jakoba i Jesoa. Niteny tamin\'ny vehivavy Samaritana izy ka naneho fa Mesia izy.'},
+       hist:{fr:'~28 ap. J.-C. — dialogue brisant trois tabous : genre, ethnicité, réputation.',en:'~AD 28 — dialogue breaking three taboos: gender, ethnicity, reputation.',mg:'~28 A.D. — fifanakalozan-teny nanapaka fady telo.'}},
+      {place:{fr:'Jéricho',en:'Jericho',mg:'Jeriko'},x:296,y:286,ref:'Luc 19:1-10',
+       story:{fr:'Zachée monte dans un sycomore pour voir Jésus. Jésus l\'invite chez lui. "Le Fils de l\'homme est venu chercher ce qui était perdu."',en:'Zacchaeus climbs a sycamore to see Jesus. Jesus invites himself to his home. "The Son of Man came to seek and save the lost."',mg:'Niakatra tamin\'ny aviavy i Zakeo. Niantso azy i Jesoa: "Tonga hitady sy hamonjy ny very ny Zanak\'olona."'},
+       hist:{fr:'~29 ap. J.-C. — les publicains haïs comme collaborateurs de Rome.',en:'~AD 29 — tax collectors hated as Roman collaborators.',mg:'~29 A.D. — ny mpamory hetra dia nankahala.'}},
+      {place:{fr:'Jérusalem (Passion)',en:'Jerusalem (Passion)',mg:'Jerosalema (Filaliasana)'},x:265,y:310,ref:'Luc 22-23',
+       story:{fr:'La Dernière Cène, l\'arrestation à Gethsémané, le procès devant Pilate, la crucifixion au Golgotha. Le point culminant de toute l\'histoire biblique.',en:'The Last Supper, arrest at Gethsemane, trial before Pilate, crucifixion at Golgotha. The climax of all biblical history.',mg:'Ny Fanasana Farany, ny fisamborana tany Getsemane, ny fitsarana teo anatrehan\'i Pilato, ny fanomboana tamin\'ny hazo fijaliana.'},
+       hist:{fr:'Pâque ~7 avril 30 ap. J.-C. Pilate fut préfet 26-36 ap. J.-C.',en:'Passover ~April 7, AD 30. Pilate was prefect 26-36 AD.',mg:'Paka ~7 Aprily 30 A.D. Pilato dia governora 26-36 A.D.'}},
+      {place:{fr:'Jérusalem (Ascension)',en:'Jerusalem (Ascension)',mg:'Jerosalema (Fiakaran\'i Jesoa)'},x:265,y:308,ref:'Actes 1:9-12',
+       story:{fr:'40 jours après la résurrection, Jésus bénit ses disciples sur le mont des Oliviers et monte au ciel.',en:'40 days after the resurrection, Jesus blesses his disciples on the Mount of Olives and ascends to heaven.',mg:'40 andro taorian\'ny nitsangana, nitso-drano ny mpianany teo an\'i Olivia i Jesoa ary niakatra any an-danitra.'},
+       hist:{fr:'Le mont des Oliviers domine Jérusalem à l\'est.',en:'The Mount of Olives overlooks Jerusalem from the east.',mg:'Ny Tendrombohitr\'i Olivia dia mijaona an\'i Jerosalema eo antsinanana.'}},
+    ]
+  },
+  {
+    id:'exode', name:{fr:'Exode et conquête',en:'Exodus and Conquest',mg:'Fivoahana sy fanajanana'},
+    desc:{fr:'~1446-1380 av. J.-C. · 5 étapes',en:'~1446-1380 BC · 5 steps',mg:'~1446-1380 tal. J.-K. · dingana 5'},
+    color:'#556b2f',
+    steps:[
+      {place:{fr:'Égypte (Goshen)',en:'Egypt (Goshen)',mg:'Egypta (Gosena)'},x:68,y:478,ref:'Ex 1-12',
+       story:{fr:'Les fils d\'Israël sont esclaves. Moïse est appelé au buisson ardent. Les dix plaies frappent l\'Égypte. La nuit de la Pâque : l\'ange passe. Israël part.',en:'Israel\'s sons are slaves. Moses is called at the burning bush. Ten plagues strike Egypt. Passover night: the angel passes. Israel departs.',mg:'Andevo ny Zanak\'Israely. Nantsoina i Mosesy teo amin\'ny voarobelona mirehitra. Nisy loza folo namely an\'i Egypta. Nivoaka i Israely.'},
+       hist:{fr:'~1446 av. J.-C. (chronologie haute) ou ~1290 av. J.-C. (Ramsès II).',en:'~1446 BC (high chronology) or ~1290 BC (Ramesses II).',mg:'~1446 tal. J.-K. na ~1290 tal. J.-K.'}},
+      {place:{fr:'Mer des Roseaux',en:'Red Sea',mg:'Ranomasina Mena'},x:100,y:435,ref:'Ex 14',
+       story:{fr:'Pharaon lance ses chars à la poursuite. Coincés contre la mer, le peuple crie. Dieu ouvre les eaux. Israël passe. Les chars sont engloutis.',en:'Pharaoh sends his chariots in pursuit. Trapped against the sea, the people cry out. God parts the waters. Israel crosses. The chariots are swallowed.',mg:'Naniraka ny kalesy hitady an\'i Israely i Farao. Nosokafan\'Andriamanitra ny ranomasina. Niampita i Israely. Ny kalesy dia nodimbiasan\'ny rano.'},
+       hist:{fr:'Le miracle fonde la foi d\'Israël pour l\'éternité.',en:'The miracle founds Israel\'s faith for eternity.',mg:'Ny fahagagana io no fototr\'ny finoan\'i Israely mandrakizay.'}},
+      {place:{fr:'Mont Sinaï',en:'Mount Sinai',mg:'Tendrombohitra Sinay'},x:172,y:510,ref:'Ex 19-20',
+       story:{fr:'Dans un nuage de feu, Dieu descend sur la montagne. Moïse reçoit les Dix Commandements et la Torah.',en:'In a cloud of fire, God descends on the mountain. Moses receives the Ten Commandments and the Torah.',mg:'Nidina tamin\'ny tendrombohi-tara i Andriamanitra. Nahazo ny Didy Folo sy ny Lalàna i Mosesy.'},
+       hist:{fr:'Identifié traditionnellement au Jebel Mousa (2 285 m) dans la péninsule du Sinaï.',en:'Traditionally identified with Jebel Musa (2,285m) in the Sinai Peninsula.',mg:'Atao hoe Jebel Musa (2 285 m) ao amin\'ny saikinosy Sinay.'}},
+      {place:{fr:'Qadesh-Barnéa',en:'Kadesh-Barnea',mg:'Kadesy-Barnea'},x:165,y:430,ref:'Nb 13-14',
+       story:{fr:'Douze espions explorent Canaan. Dix reviennent avec un mauvais rapport. Caleb et Josué seuls font confiance à Dieu. Le peuple erre 40 ans.',en:'Twelve spies explore Canaan. Ten return with a bad report. Only Caleb and Joshua trust God. The people wander 40 years.',mg:'Mpitsikilo roa ambiny folo nikaroka an\'i Kanana. Folo tamin\'izy ireo nitatitra ratsy. Irery i Kaleby sy Josoa no natoky an\'Andriamanitra. Nirenireny 40 taona ny vahoaka.'},
+       hist:{fr:'La rébellion entraîne 40 ans d\'errance — une génération entière meurt.',en:'The rebellion leads to 40 years of wandering — an entire generation dies.',mg:'Ny fikomiana dia nitarika amin\'ny 40 taona nirenireny. Maty ny taranaka iray manontolo.'}},
+      {place:{fr:'Jéricho',en:'Jericho',mg:'Jeriko'},x:296,y:286,ref:'Jos 2-6',
+       story:{fr:'Josué envoie deux espions que Rahab cache. Pendant 7 jours, Israël tourne autour de la ville. Au 7e jour, les murailles s\'effondrent.',en:'Joshua sends two spies whom Rahab hides. For 7 days Israel marches around the city. On the 7th day, the walls collapse.',mg:'Naniraka mpitsikilo roa i Josoa ka nafehin\'i Rahaba. Nandeha manodidina an\'i Jeriko 7 andro i Israely. Nirodana ny mandam-tanàna.'},
+       hist:{fr:'Première victoire en Canaan — Rahab est ancêtre de Jésus (Matt 1:5).',en:'First victory in Canaan — Rahab is an ancestor of Jesus (Matt 1:5).',mg:'Fandresena voalohany tao Kanana — Rahaba dia razamben\'i Jesoa (Mat 1:5).'}},
+    ]
+  },
+  {
+    id:'paul', name:{fr:'Voyages de Paul',en:'Paul\'s Journeys',mg:'Diandalanan\'i Paoly'},
+    desc:{fr:'~46-60 ap. J.-C. · 5 étapes',en:'~AD 46-60 · 5 steps',mg:'~46-60 A.D. · dingana 5'},
+    color:'#5a3070',
+    steps:[
+      {place:{fr:'Damas',en:'Damascus',mg:'Damaskosy'},x:352,y:112,ref:'Actes 9:1-25',
+       story:{fr:'Sur le chemin de Damas, Paul est renversé par une lumière éblouissante. "Saul, pourquoi me persécutes-tu ?" Aveugle 3 jours, il est baptisé par Ananias.',en:'On the road to Damascus, Paul is struck by a blinding light. "Saul, why do you persecute me?" Blind for 3 days, he is baptized by Ananias.',mg:'Teo an-dalana mankany Damaskosy, nianjera i Paoly nahitan\'ny fahazavana. "Saoly, nahoana ianao no manenjika ahy?" Jamba 3 andro, natao batisa nataon\'i Ananiana.'},
+       hist:{fr:'~34 ap. J.-C. — conversion la plus décisive de l\'histoire chrétienne.',en:'~AD 34 — most decisive conversion in Christian history.',mg:'~34 A.D. — fiovan-toetra manan-danja indrindra amin\'ny tantaran\'ny Kristianisma.'}},
+      {place:{fr:'Jérusalem (Concile)',en:'Jerusalem (Council)',mg:'Jerosalema (Konsilin\'ny Apostoly)'},x:265,y:310,ref:'Actes 15',
+       story:{fr:'Le Concile de Jérusalem tranche : les non-Juifs n\'ont pas besoin d\'être circoncis pour être sauvés. La grâce par la foi suffit.',en:'The Jerusalem Council decides: Gentiles do not need to be circumcised to be saved. Grace through faith is sufficient.',mg:'Ny Konsilin\'i Jerosalema dia nifidy: tsy ilain\'ny mpanara-Kristiana avy amin\'ny Jentilisa ny famorana mba ho voavonjy.'},
+       hist:{fr:'~49 ap. J.-C. — décision qui ouvre l\'Évangile à toutes les nations.',en:'~AD 49 — decision that opens the Gospel to all nations.',mg:'~49 A.D. — fanapahan-kevitra nanokatra ny Filazantsara ho an\'ny firenena rehetra.'}},
+      {place:{fr:'Thessalonique',en:'Thessalonica',mg:'Tesalonika'},x:155,y:68,ref:'Actes 17:1-9',
+       story:{fr:'Paul prêche 3 sabbats à la synagogue. Des Juifs jaloux soulèvent une émeute. Paul fuit de nuit. Mais une Église solide est fondée.',en:'Paul preaches 3 sabbaths in the synagogue. Jealous Jews stir up a riot. Paul flees by night. But a solid church is founded.',mg:'Nitory i Paoly tamin\'ny sabata 3 ao am-pisangambadiana. Nisy tabataba. Nandositra i Paoly. Naorina ny Fiangonana mafy orina.'},
+       hist:{fr:'Thessalonique est sur la Via Egnatia — route romaine reliant Rome à l\'Orient.',en:'Thessalonica is on the Via Egnatia — Roman road linking Rome to the East.',mg:'Tesalonika dia eo amin\'ny Via Egnatia — lalana romana mampifandray Roma sy ny Atsinanana.'}},
+      {place:{fr:'Corinthe',en:'Corinth',mg:'Korinto'},x:118,y:152,ref:'Actes 18:1-17',
+       story:{fr:'Paul séjourne 18 mois à Corinthe — son plus long séjour. Il travaille comme fabricant de tentes avec Aquilas et Priscille.',en:'Paul stays 18 months in Corinth — his longest stay. He works as a tentmaker with Aquila and Priscilla.',mg:'Nitoetra 18 volana tao Korinto i Paoly — nijanona ela indrindra. Niasa fanaovana lain-dahy izy niaraka tamin\'i Akila sy Priskila.'},
+       hist:{fr:'Corinthe : carrefour commercial majeur. Ville réputée pour ses vices.',en:'Corinth: major commercial crossroads. City known for its vices.',mg:'Korinto: toerana mifanakalo entana lehibe. Tanàna nalaza ratsy.'}},
+      {place:{fr:'Rome',en:'Rome',mg:'Roma'},x:42,y:192,ref:'Actes 28:14-31',
+       story:{fr:'Après 2 ans de détention à Césarée, Paul arrive à Rome. Il prêche pendant 2 ans sous garde, "avec une pleine liberté".',en:'After 2 years of detention in Caesarea, Paul arrives in Rome. He preaches for 2 years under guard, "with all boldness."',mg:'Taorian\'ny nianjerana 2 taona tany Kaisarea, tonga tany Roma i Paoly. Nitory teo ambanin\'ny mpiambina 2 taona izy.'},
+       hist:{fr:'Paul arriva à Rome ~60 ap. J.-C. Martyrisé vers 67-68 ap. J.-C. sous Néron.',en:'Paul arrived in Rome ~AD 60. Martyred around 67-68 AD under Nero.',mg:'Tonga tany Roma ~60 A.D. i Paoly. Natao martiry ~67-68 A.D. teo ambanin\'i Nerona.'}},
+    ]
+  }
+];
+
+// ============================================================
+// RENDERING
+// ============================================================
+
+function t(obj) {
+  if (!obj) return '';
+  return obj[lang] || obj['fr'] || '';
+}
+
+function showView(view, btn) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+  document.getElementById(view + '-view').classList.add('active');
+  btn.classList.add('active');
+  if (view === 'parcours') renderParcours();
+}
+
+function setLang(l) {
+  lang = l;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`.lang-btn[onclick="setLang('${l}')"]`).classList.add('active');
+  document.getElementById('mp-title').textContent = I18N[l].map;
+  document.getElementById('mp-sub').textContent = I18N[l].select;
+  renderMapDots();
+  if (activePlace) renderPlaceDetail(activePlace);
+  renderParcours();
+  renderTabs();
+}
+
+function renderTabs() {
+  document.getElementById('tab-map').textContent = I18N[lang].map;
+  document.getElementById('tab-parcours').textContent = I18N[lang].parcours;
+  document.getElementById('tab-search').textContent = I18N[lang].search;
+}
+
+// ===== MAP =====
+const DOT_COLORS = { AT:'#556b2f', NT:'#2a6e5a', both:'#8b2020' };
+
+function renderMapDots() {
+  const svg = document.getElementById('map-dots');
+  svg.innerHTML = '';
+  Object.entries(PLACES).forEach(([id, p]) => {
+    const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    g.style.cursor = 'pointer';
+    g.onclick = () => selectPlace(id);
+
+    const isActive = activePlace === id;
+    const col = p.color || DOT_COLORS[p.era] || '#556b2f';
+
+    const outer = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    outer.setAttribute('cx', p.x); outer.setAttribute('cy', p.y);
+    outer.setAttribute('r', isActive ? '10' : '7');
+    outer.setAttribute('fill', col);
+    outer.setAttribute('opacity', isActive ? '1' : '0.75');
+    if (isActive) { outer.setAttribute('stroke', '#f5ead0'); outer.setAttribute('stroke-width', '2'); }
+
+    const inner = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    inner.setAttribute('cx', p.x); inner.setAttribute('cy', p.y);
+    inner.setAttribute('r', '3');
+    inner.setAttribute('fill', 'white'); inner.setAttribute('opacity', '0.85');
+
+    const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    label.setAttribute('x', p.x + 11); label.setAttribute('y', p.y + 4);
+    label.setAttribute('font-size', '9'); label.setAttribute('fill', '#2c1f0e');
+    label.setAttribute('font-family', 'Cinzel, serif'); label.setAttribute('pointer-events', 'none');
+    label.textContent = t(p.name);
+
+    g.appendChild(outer); g.appendChild(inner); g.appendChild(label);
+    svg.appendChild(g);
+  });
+}
+
+function setFilter(f, btn) {
+  currentFilter = f;
+  document.querySelectorAll('.fbtn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (activePlace) renderPlaceDetail(activePlace);
+}
+
+function selectPlace(id) {
+  activePlace = id;
+  renderMapDots();
+  renderPlaceDetail(id);
+}
+
+function renderPlaceDetail(id) {
+  const p = PLACES[id];
+  const detail = document.getElementById('place-detail');
+  const eraClass = p.era === 'both' ? 'era-both' : p.era === 'NT' ? 'era-nt' : 'era-at';
+  const eraText = p.era === 'both' ? 'AT & NT' : p.era === 'NT' ? 'Nouveau Testament' : 'Ancien Testament';
+
+  let filtered = p.events;
+  if (currentFilter === 'AT') filtered = p.events.filter(e => e.era === 'AT');
+  if (currentFilter === 'NT') filtered = p.events.filter(e => e.era === 'NT');
+
+  let html = `<p class="place-name">${t(p.name)}</p>
+    <p class="place-loc">${t(p.modern)}</p>
+    <span class="place-era ${eraClass}">${eraText}</span>
+    <p class="place-ctx">${t(p.context)}</p>`;
+
+  if (p.people && p.people.length) {
+    html += `<p style="font-size:11px;color:var(--ink3);margin-bottom:10px;">${I18N[lang].people} : <span style="color:var(--ink2);">${p.people.join(', ')}</span></p>`;
+  }
+
+  if (filtered.length === 0) {
+    html += `<p style="font-size:12px;color:var(--ink3);font-style:italic;">Aucun événement pour ce filtre.</p>`;
+  } else {
+    filtered.forEach(e => {
+      html += `<div class="ev-card">
+        <div class="ev-ref">${e.ref}</div>
+        <div class="ev-title">${t(e.title)}</div>
+        <div class="ev-desc">${t(e.desc)}</div>
+        <div class="ev-hist">${t(e.hist)}</div>
+      </div>`;
+    });
+  }
+
+  detail.innerHTML = html;
+}
+
+// ===== PARCOURS =====
+function setParcours(idx, btn) {
+  currentParcours = idx;
+  currentStep = 0;
+  document.querySelectorAll('.ptab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderParcours();
+}
+
+function renderParcours() {
+  const p = PARCOURS_DATA[currentParcours];
+  const col = p.color;
+  document.getElementById('parc-title').textContent = t(p.name);
+  document.getElementById('parc-desc').textContent = t(p.desc);
+  document.getElementById('parc-counter').textContent = `${currentStep + 1} / ${p.steps.length}`;
+
+  // Lines
+  const lines = document.getElementById('parc-lines');
+  lines.innerHTML = '';
+  for (let i = 0; i < p.steps.length - 1; i++) {
+    const a = p.steps[i], b = p.steps[i + 1];
+    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    line.setAttribute('x1', a.x); line.setAttribute('y1', a.y);
+    line.setAttribute('x2', b.x); line.setAttribute('y2', b.y);
+    line.setAttribute('stroke', col); line.setAttribute('stroke-width', '2');
+    line.setAttribute('stroke-dasharray', '5,4'); line.setAttribute('opacity', '0.65');
+    lines.appendChild(line);
+  }
+
+  // Dots
+  const dots = document.getElementById('parc-dots');
+  dots.innerHTML = '';
+  p.steps.forEach((s, i) => {
+    const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    g.style.cursor = 'pointer';
+    g.onclick = () => goStep(i);
+
+    const isActive = i === currentStep;
+    const outer = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    outer.setAttribute('cx', s.x); outer.setAttribute('cy', s.y);
+    outer.setAttribute('r', isActive ? '13' : '9');
+    outer.setAttribute('fill', col);
+    outer.setAttribute('opacity', isActive ? '1' : '0.5');
+    if (isActive) { outer.setAttribute('stroke', '#f5ead0'); outer.setAttribute('stroke-width', '2.5'); }
+
+    const num = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    num.setAttribute('x', s.x); num.setAttribute('y', s.y + 4);
+    num.setAttribute('text-anchor', 'middle'); num.setAttribute('font-size', '10');
+    num.setAttribute('fill', 'white'); num.setAttribute('font-weight', '600');
+    num.setAttribute('font-family', 'Cinzel, serif'); num.setAttribute('pointer-events', 'none');
+    num.textContent = i + 1;
+
+    g.appendChild(outer); g.appendChild(num);
+    dots.appendChild(g);
+  });
+
+  // Step content
+  const s = p.steps[currentStep];
+  document.getElementById('parc-content').innerHTML = `
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+      <div class="step-badge" style="background:${col};">${currentStep + 1}</div>
+      <div>
+        <div class="step-place">${t(s.place)}</div>
+        <div class="step-ref" style="color:${col};">${s.ref}</div>
+      </div>
+    </div>
+    <p class="step-story">${t(s.story)}</p>
+    <div class="step-hist"><strong>${I18N[lang].context}</strong>${t(s.hist)}</div>`;
+
+  // Mini steps
+  const mini = document.getElementById('mini-steps');
+  mini.innerHTML = '';
+  p.steps.forEach((_, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'mini-s' + (i === currentStep ? ' active' : '');
+    btn.style.background = col;
+    btn.textContent = i + 1;
+    btn.onclick = () => goStep(i);
+    mini.appendChild(btn);
+  });
+}
+
+function goStep(i) { currentStep = i; renderParcours(); }
+function nextStep() { if (currentStep < PARCOURS_DATA[currentParcours].steps.length - 1) { currentStep++; renderParcours(); } }
+function prevStep() { if (currentStep > 0) { currentStep--; renderParcours(); } }
+
+// ===== SEARCH =====
+function doSearch(q) {
+  const res = document.getElementById('search-results');
+  if (!q.trim()) { res.innerHTML = `<p class="sr-empty">${I18N[lang].empty}</p>`; return; }
+  const ql = q.toLowerCase();
+  let html = '';
+  Object.entries(PLACES).forEach(([id, p]) => {
+    const nameMatch = t(p.name).toLowerCase().includes(ql);
+    const ctxMatch = t(p.context).toLowerCase().includes(ql);
+    const peopleMatch = (p.people || []).some(per => per.toLowerCase().includes(ql));
+    const evMatch = p.events.some(e => t(e.title).toLowerCase().includes(ql) || t(e.desc).toLowerCase().includes(ql));
+    if (nameMatch || ctxMatch || peopleMatch || evMatch) {
+      const matchTag = peopleMatch ? (p.people || []).filter(per => per.toLowerCase().includes(ql)).join(', ') : '';
+      html += `<div class="sr-card" onclick="goToPlace('${id}')">
+        <div class="sr-name">${t(p.name)}</div>
+        <div class="sr-tag">${matchTag ? '👤 ' + matchTag + ' · ' : ''}${t(p.modern)}</div>
+        <div class="sr-preview">${t(p.context).substring(0, 100)}...</div>
+      </div>`;
+    }
+  });
+  if (!html) html = `<p class="sr-empty">Aucun résultat pour "${q}"</p>`;
+  res.innerHTML = html;
+}
+
+function goToPlace(id) {
+  showView('map', document.getElementById('tab-map'));
+  selectPlace(id);
+}
+
+// ===== INIT =====
+renderMapDots();
+renderParcours();
+</script>
+
+<!-- PWA Service Worker -->
+<script>
+if ('serviceWorker' in navigator) {
+  const swCode = `
+const CACHE = 'atlas-biblique-v1';
+self.addEventListener('install', e => {
+  e.waitUntil(caches.open(CACHE).then(c => c.addAll(['/'])));
+});
+self.addEventListener('fetch', e => {
+  e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)));
+});`;
+  const blob = new Blob([swCode], {type: 'application/javascript'});
+  const swUrl = URL.createObjectURL(blob);
+  navigator.serviceWorker.register(swUrl).catch(() => {});
+}
+</script>
+</body>
+</html>
