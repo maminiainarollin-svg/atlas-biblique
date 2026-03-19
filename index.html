@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -278,6 +277,7 @@ body { font-family: 'Crimson Pro', Georgia, serif; color: var(--ink); }
         </div>
         <div id="filter-bar">
           <button class="fbtn active" onclick="setFilter('tous',this)">Tous</button>
+          <button class="fbtn" onclick="setFilter('Genèse',this)">Genèse</button>
           <button class="fbtn" onclick="setFilter('AT',this)">Ancien T.</button>
           <button class="fbtn" onclick="setFilter('NT',this)">Nouveau T.</button>
         </div>
@@ -457,6 +457,135 @@ const PLACES = {
       {ref:'Jean 4:1-42',title:{fr:'La Samaritaine',en:'Woman at the Well',mg:'Vehivavy Samaritana'},desc:{fr:'Jésus révèle à une femme rejetée qu\'il est le Messie.',en:'Jesus reveals to a rejected woman that he is the Messiah.',mg:'Naneho tamin\'ny vehivavy iray nolavin\'ny olona fa Mesia izy i Jesoa.'},hist:{fr:'~28 ap. J.-C. — hostilité entre Juifs et Samaritains depuis 722 av. J.-C.',en:'~AD 28 — hostility between Jews and Samaritans since 722 BC.',mg:'~28 A.D. — fifandrafiana Jody sy Samaritana hatramin\'ny 722 tal. J.-K.'},era:'NT'}
     ]
   },
+  // ===== GENÈSE =====
+  eden: {
+    x:480, y:175,
+    name:{fr:'Jardin d\'Éden',en:'Garden of Eden',mg:'Saha Edena'},
+    modern:{fr:'Mésopotamie (localisation incertaine)',en:'Mesopotamia (uncertain location)',mg:'Mesopotamia (tsy fantatra tsara)'},
+    era:'AT',
+    context:{fr:'Lieu de la création de l\'humanité selon la Genèse. Traversé par quatre fleuves dont le Tigre et l\'Euphrate. Les théologiens situent traditionnellement Éden en Mésopotamie (actuel Irak).',en:'Place of humanity\'s creation according to Genesis. Crossed by four rivers including the Tigris and Euphrates. Traditionally located in Mesopotamia (modern Iraq).',mg:'Toerana namoronana ny olombelona araka ny Genesisy. Nandalo ny ony efatra.'},
+    people:['Adam','Ève','Caïn','Abel'],
+    color:'#2a6e5a',
+    events:[
+      {ref:'Gen 1-2',title:{fr:'Création de l\'homme et de la femme',en:'Creation of man and woman',mg:'Namoronana ny lehilahy sy ny vehivavy'},desc:{fr:'Dieu forme Adam de la poussière du sol et Eve d\'une côte d\'Adam. Ils vivent dans l\'abondance du jardin.',en:'God forms Adam from the dust of the ground and Eve from Adam\'s rib. They live in the abundance of the garden.',mg:'Namoron\'Andriamanitra an\'i Adama tamin\'ny vovoka ary i Eva tamin\'ny taolan-tehezany.'},hist:{fr:'Récit fondateur de toute la théologie biblique de l\'humanité.',en:'Founding narrative of all biblical theology of humanity.',mg:'Tantara fototra amin\'ny teolojia momba ny olombelona.'},era:'AT'},
+      {ref:'Gen 3',title:{fr:'La chute — péché originel',en:'The Fall — original sin',mg:'Ny fahalavo — fahotana voalohany'},desc:{fr:'Adam et Ève mangent le fruit défendu après la tentation du serpent. Dieu les chasse du jardin.',en:'Adam and Eve eat the forbidden fruit after the serpent\'s temptation. God drives them from the garden.',mg:'Nihinana ny voankazo voarara i Adama sy Eva. Nesorin\'Andriamanitra tao amin\'ny saha izy ireo.'},hist:{fr:'Ce récit explique la condition humaine : travail, souffrance, mort. Fondamental pour la théologie du salut.',en:'This narrative explains the human condition: work, suffering, death. Fundamental for salvation theology.',mg:'Io tantara io dia manazava ny toetr\'olombelona: asa, fijaliana, fahafatesana.'},era:'AT'}
+    ]
+  },
+  ur: {
+    x:505, y:192,
+    name:{fr:'Ur des Chaldéens',en:'Ur of the Chaldeans',mg:'Ora Kaldeana'},
+    modern:{fr:'Tell el-Muqayyar, Irak du Sud',en:'Tell el-Muqayyar, southern Iraq',mg:'Tell el-Muqayyar, Iraka atsimo'},
+    era:'AT',
+    context:{fr:'Grande cité sumérienne (~50 000 habitants) sur l\'Euphrate. Fouillée par Leonard Woolley (1922-1934) qui y découvrit les tombes royales et une couche de sédiment évoquant un déluge local.',en:'Great Sumerian city (~50,000 inhabitants) on the Euphrates. Excavated by Leonard Woolley (1922-1934) who discovered royal tombs and a flood sediment layer.',mg:'Tanàna someriana lehibe (~50 000 mponina) eo akaikin\'ny Eofrata.'},
+    people:['Abraham','Térah','Nahor'],
+    color:'#b8860b',
+    events:[
+      {ref:'Gen 11:28-31',title:{fr:'Famille d\'Abraham à Ur',en:'Abraham\'s family at Ur',mg:'Fianakavian\'i Abrahama tany Ora'},desc:{fr:'Térah, père d\'Abraham, part d\'Ur avec sa famille en direction de Canaan mais s\'arrête à Haran.',en:'Terah, Abraham\'s father, leaves Ur with his family heading for Canaan but stops at Haran.',mg:'Niala tany Ora niaraka tamin\'ny fianakaviany i Tera, rain\'i Abrahama, nankany Kanana nefa nijanona tany Harana.'},hist:{fr:'Ur était l\'une des villes les plus avancées du monde antique — ziggourats, écriture cunéiforme, mathématiques développées.',en:'Ur was one of the most advanced cities of the ancient world — ziggurats, cuneiform writing, advanced mathematics.',mg:'Ora dia iray tamin\'ireo tanàna mandroso indrindra tamin\'ny andron\'ny fahiny.'},era:'AT'}
+    ]
+  },
+  haran: {
+    x:430, y:72,
+    name:{fr:'Haran',en:'Haran',mg:'Harana'},
+    modern:{fr:'Harran, Turquie du Sud-Est',en:'Harran, southeastern Turkey',mg:'Harran, Torkia atsimo-atsinanana'},
+    era:'AT',
+    context:{fr:'Carrefour caravannier majeur entre la Mésopotamie et la Méditerranée. Centre de culte du dieu-lune Sin. Abraham s\'y arrête à la mort de son père Térah, puis repart vers Canaan à l\'appel de Dieu.',en:'Major caravan crossroads between Mesopotamia and the Mediterranean. Center of worship for the moon god Sin. Abraham stops here at his father Terah\'s death, then leaves for Canaan at God\'s call.',mg:'Farihy karamanà lehibe teo anelanelan\'ny Mesopotamia sy ny Mediterane.'},
+    people:['Abraham','Térah','Rébecca','Jacob','Laban'],
+    color:'#b8860b',
+    events:[
+      {ref:'Gen 11:31-12:4',title:{fr:'Arrêt de Térah et appel d\'Abraham',en:'Terah\'s stop and Abraham\'s call',mg:'Nijanon\'i Tera sy nantsoina i Abrahama'},desc:{fr:'Térah meurt à Haran à 205 ans. Dieu appelle Abraham : "Va vers le pays que je te montrerai." À 75 ans, Abraham obéit.',en:'Terah dies at Haran at age 205. God calls Abraham: "Go to the land I will show you." At 75, Abraham obeys.',mg:'Maty tany Harana i Tera. Niantso an\'i Abrahama i Andriamanitra: "Mandehana ho any." Nankatò i Abrahama tamin\'ny faha-75 taonany.'},hist:{fr:'L\'appel d\'Abraham marque le début de l\'histoire du salut — Dieu choisit un homme pour bénir toutes les nations (Gen 12:3).',en:'The call of Abraham marks the beginning of salvation history — God chooses one man to bless all nations (Gen 12:3).',mg:'Ny fiantsoana an\'i Abrahama dia manomboka ny tantaran\'ny famonjena.'},era:'AT'},
+      {ref:'Gen 29-31',title:{fr:'Jacob chez Laban',en:'Jacob with Laban',mg:'Jakoba tany amin\'i Labana'},desc:{fr:'Jacob fuit vers Haran après avoir trompé Ésaü. Il y épouse Léa et Rachel, travaille 20 ans pour Laban, et repart avec ses 12 fils.',en:'Jacob flees to Haran after deceiving Esau. He marries Leah and Rachel there, works 20 years for Laban, and leaves with his 12 sons.',mg:'Nandositra nankany Harana i Jakoba. Nanambady an\'i Lea sy Rahely izy, niasa 20 taona ho an\'i Labana.'},hist:{fr:'Les 12 fils de Jacob sont les ancêtres des 12 tribus d\'Israël.',en:'Jacob\'s 12 sons are the ancestors of the 12 tribes of Israel.',mg:'Ny zanakalahy 12 amin\'i Jakoba no razamben\'ny fokon\'Israely 12.'},era:'AT'}
+    ]
+  },
+  sodome: {
+    x:308, y:355,
+    name:{fr:'Sodome et Gomorrhe',en:'Sodom and Gomorrah',mg:'Sodoma sy Gomora'},
+    modern:{fr:'Mer Morte, région sud (localisation débattue)',en:'Southern Dead Sea region (debated location)',mg:'Atsimo ny Ranomasina Maty (tsy mitovy hevitra)'},
+    era:'AT',
+    context:{fr:'Villes de la plaine du Jourdain, réputées pour leur immoralité. Détruites par le feu et le soufre selon la Genèse. Plusieurs sites archéologiques ont été proposés autour de la Mer Morte.',en:'Cities of the Jordan plain, known for their immorality. Destroyed by fire and sulfur according to Genesis. Several archaeological sites have been proposed around the Dead Sea.',mg:'Tanàna tao amin\'ny faritra Jordana, nalaza ratsy. Rava tamin\'ny afo sy solifara.'},
+    people:['Lot','Abraham','Melchisédek'],
+    color:'#8b2020',
+    events:[
+      {ref:'Gen 13:10-13',title:{fr:'Lot s\'installe à Sodome',en:'Lot settles in Sodom',mg:'Nipetraka tany Sodoma i Lota'},desc:{fr:'Après la séparation d\'avec Abraham, Lot choisit la plaine du Jourdain et s\'installe à Sodome.',en:'After separating from Abraham, Lot chooses the Jordan plain and settles in Sodom.',mg:'Taorian\'ny fisarahana tamin\'i Abrahama, niorina tany Sodoma i Lota.'},hist:{fr:'La plaine du Jourdain était alors "comme le jardin de l\'Éternel" — très fertile avant la catastrophe.',en:'The Jordan plain was then "like the garden of the Lord" — very fertile before the catastrophe.',mg:'Ny lemaka Jordana dia tahaka ny "sahan\'ny Tompo" — vokatra be talohan\'ny loza.'},era:'AT'},
+      {ref:'Gen 19:1-29',title:{fr:'Destruction de Sodome',en:'Destruction of Sodom',mg:'Naravana i Sodoma'},desc:{fr:'Deux anges arrivent à Sodome. Lot les accueille. Dieu détruit les villes par le feu et le soufre. La femme de Lot regarde en arrière et devient une statue de sel.',en:'Two angels arrive at Sodom. Lot welcomes them. God destroys the cities by fire and sulfur. Lot\'s wife looks back and becomes a pillar of salt.',mg:'Tonga tany Sodoma ny anjely roa. Noravan\'Andriamanitra ny tanàna tamin\'ny afo sy solifara. Nitodika ny vadin\'i Lota ka lasa sarin\'ny fanasin\'ny tany.'},hist:{fr:'Certains géologues évoquent un séisme ou une explosion de gaz naturel autour de 2000 av. J.-C.',en:'Some geologists cite an earthquake or natural gas explosion around 2000 BC.',mg:'Ny jeolojiana sasany dia milaza ny horohoron-tany na fisotroana gazy natosika tokony ho 2000 tal. J.-K.'},era:'AT'}
+    ]
+  },
+  morija: {
+    x:266, y:314,
+    name:{fr:'Mont Morija',en:'Mount Moriah',mg:'Tendrombohitra Moria'},
+    modern:{fr:'Jérusalem — Esplanade du Temple',en:'Jerusalem — Temple Mount',mg:'Jerosalema — Toeran\'ny Tempoly'},
+    era:'AT',
+    context:{fr:'Montagne où Abraham fut mis à l\'épreuve avec Isaac. La tradition juive et chrétienne l\'identifie au rocher sur lequel Salomon construira plus tard le Temple. Aujourd\'hui sous le Dôme du Rocher.',en:'Mountain where Abraham was tested with Isaac. Jewish and Christian tradition identifies it with the rock on which Solomon later built the Temple. Today under the Dome of the Rock.',mg:'Tendrombohitra izay nitsapana an\'i Abrahama. Eo no nanorenana ny Tempolin\'i Solomona tatỳ aoriana.'},
+    people:['Abraham','Isaac'],
+    color:'#b8860b',
+    events:[
+      {ref:'Gen 22:1-19',title:{fr:'Le sacrifice d\'Isaac',en:'The sacrifice of Isaac',mg:'Ny fanatitry ny zanak\'i Abrahama'},desc:{fr:'Dieu demande à Abraham d\'offrir son fils unique Isaac. Abraham obéit jusqu\'au bout. Au moment décisif, l\'ange retient sa main : "Tu n\'as pas refusé ton fils, ton unique." Dieu pourvoit un bélier.',en:'God asks Abraham to offer his only son Isaac. Abraham obeys to the end. At the decisive moment, the angel holds back his hand: "You have not withheld your son, your only son." God provides a ram.',mg:'Nangataka tamin\'i Abrahama hanao fanatitra an\'i Isaka tokana zanany i Andriamanitra. Nihazona ny tanan\'i Abrahama ny anjely. Nanome ondrilahy i Andriamanitra.'},hist:{fr:'Ce récit (Akedah en hébreu) est le sommet de la foi abrahamique. Il préfigure théologiquement le sacrifice du Christ.',en:'This narrative (Akedah in Hebrew) is the summit of Abrahamic faith. Theologically it foreshadows the sacrifice of Christ.',mg:'Io tantara io (Akedah amin\'ny Hebreo) no tampon\'ny finoan\'i Abrahama. Manambara ny fanatitry ny Kristy.'},era:'AT'}
+    ]
+  },
+  beersheba_gen: {
+    x:230, y:398,
+    name:{fr:'Beersheba (Genèse)',en:'Beersheba (Genesis)',mg:'Beeroseba (Genesisy)'},
+    modern:{fr:'Désert du Néguev, Israël',en:'Negev Desert, Israel',mg:'Efitra Negeva, Israely'},
+    era:'AT',
+    context:{fr:'"De Dan à Beersheba" délimite l\'étendue d\'Israël. Puits vitaux dans cette région semi-aride. Carrefour des routes vers l\'Égypte, l\'Arabie et Canaan.',en:'"From Dan to Beersheba" defines Israel\'s extent. Vital wells in this semi-arid region. Crossroads of routes to Egypt, Arabia, and Canaan.',mg:'"Avy amin\'i Dana ka hatrany Beeroseba" no feran\'i Israely.'},
+    people:['Abraham','Agar','Ismaël','Isaac','Jacob'],
+    color:'#b8860b',
+    events:[
+      {ref:'Gen 21:14-19',title:{fr:'Agar et Ismaël sauvés',en:'Hagar and Ishmael saved',mg:'Navonjin\'Andriamanitra i Hagara sy Ismaela'},desc:{fr:'Chassée par Abraham, Agar erre dans le désert avec Ismaël mourant de soif. Dieu lui ouvre les yeux et lui montre un puits.',en:'Driven away by Abraham, Hagar wanders in the desert with a dying Ishmael. God opens her eyes and shows her a well.',mg:'Nesorin\'i Abrahama i Hagara ka nandroahandroa tany efitra. Nosokafan\'Andriamanitra ny masony ka nahita lavaka rano.'},hist:{fr:'Ismaël devient père des peuples arabes selon la tradition. Ce récit montre que Dieu prend soin de tous ses enfants.',en:'Ishmael becomes father of the Arab peoples according to tradition. This narrative shows God cares for all his children.',mg:'I Ismaela no rain\'ny firenena arabo araka ny fomba amam-panao.'},era:'AT'},
+      {ref:'Gen 21:22-34',title:{fr:'Alliance d\'Abraham et Abimélek',en:'Abraham\'s covenant with Abimelech',mg:'Fanekena nataon\'i Abrahama sy Abimeleky'},desc:{fr:'Abraham et le roi philistin Abimélek concluent une alliance autour d\'un puits disputé. Le nom Beersheba signifie "puits du serment".',en:'Abraham and the Philistine king Abimelech make a covenant around a disputed well. The name Beersheba means "well of the oath."',mg:'Nanao fanekena i Abrahama sy Abimeleky ao akaikin\'ny fantsakana. Beeroseba midika hoe "lavaka rano ny fianianan\'ny olona."'},hist:{fr:'L\'eau était une ressource stratégique dans le Néguev — les traités autour des puits étaient des actes politiques majeurs.',en:'Water was a strategic resource in the Negev — treaties around wells were major political acts.',mg:'Ny rano dia harena sarobidy tany Negeva.'},era:'AT'},
+      {ref:'Gen 26:23-33',title:{fr:'Vision d\'Isaac à Beersheba',en:'Isaac\'s vision at Beersheba',mg:'Fahitana an\'i Isaka tany Beeroseba'},desc:{fr:'Dieu apparaît à Isaac : "Je suis le Dieu d\'Abraham ton père. Ne crains pas." Isaac y creuse un puits et conclut un traité avec Abimélek.',en:'God appears to Isaac: "I am the God of your father Abraham. Do not be afraid." Isaac digs a well and makes a treaty with Abimelech.',mg:'Niseho tamin\'i Isaka i Andriamanitra: "Izaho no Andriamanitr\'i Abrahama rainao. Aza matahotra."'},hist:{fr:'Dieu renouvelle l\'alliance abrahamique à chaque génération — Abraham, Isaac, Jacob.',en:'God renews the Abrahamic covenant each generation — Abraham, Isaac, Jacob.',mg:'Anaovan\'Andriamanitra vaovao ny fanekena amin\'ny taranaka tsirairay.'},era:'AT'}
+    ]
+  },
+  dotan: {
+    x:248, y:230,
+    name:{fr:'Dotân',en:'Dothan',mg:'Dotana'},
+    modern:{fr:'Tell Dothan, Cisjordanie nord',en:'Tell Dothan, northern West Bank',mg:'Tell Dotana, avaratra Ranomasimbe Andrefana'},
+    era:'AT',
+    context:{fr:'Ville à 22 km au nord de Sichem, sur la route caravanière vers l\'Égypte. Fouillée par Joseph Free (1953-1964) qui confirma son occupation au Bronze moyen — exactement l\'époque de Joseph.',en:'City 22km north of Shechem, on the caravan route to Egypt. Excavated by Joseph Free (1953-1964) who confirmed its occupation in the Middle Bronze Age — exactly the time of Joseph.',mg:'Tanàna 22 km avaratra i Sekema, eo amin\'ny lalana mankany Egypta.'},
+    people:['Joseph','ses frères'],
+    color:'#b8860b',
+    events:[
+      {ref:'Gen 37:12-36',title:{fr:'Joseph vendu par ses frères',en:'Joseph sold by his brothers',mg:'Nivarotra an\'i Josefa ny rahalahiny'},desc:{fr:'Joseph retrouve ses frères qui font paître les troupeaux à Dotân. Ils le jettent dans une citerne puis le vendent à des marchands ismaélites en route vers l\'Égypte pour 20 pièces d\'argent.',en:'Joseph finds his brothers grazing flocks at Dothan. They throw him in a cistern then sell him to Ishmaelite merchants heading to Egypt for 20 pieces of silver.',mg:'Hitany tany Dotana ny rahalahiny i Josefa. Nazeriny tao am-pantsakan\'ny rano izy ireo ka nivarotra azy tamin\'ny mpivarotra ismaelita nankany Egypta vola efapolo.'},hist:{fr:'20 pièces d\'argent était le prix d\'un esclave au Bronze moyen selon les tablettes de Mari (~1800 av. J.-C.).',en:'20 pieces of silver was the price of a slave in the Middle Bronze Age according to the Mari tablets (~1800 BC).',mg:'Vola efapolo no vidim\'andevo tamin\'ny andron\'ny Bronze Afovoany araka ny takelaka Mari (~1800 tal. J.-K.).'},era:'AT'}
+    ]
+  },
+  peniel: {
+    x:330, y:255,
+    name:{fr:'Peniel / Pénuel',en:'Peniel / Penuel',mg:'Peniel / Penoela'},
+    modern:{fr:'Confluence Jabbok-Jourdain, Jordanie',en:'Jabbok-Jordan confluence, Jordan',mg:'Fiatoky Jaboka sy Jordana, Jordania'},
+    era:'AT',
+    context:{fr:'Gué du torrent Jabbok, affluent oriental du Jourdain. Lieu du combat mystérieux de Jacob avec l\'ange. C\'est ici que Jacob reçoit le nom "Israël" — "celui qui lutte avec Dieu".',en:'Ford of the Jabbok stream, eastern tributary of the Jordan. Site of Jacob\'s mysterious wrestling with the angel. Here Jacob receives the name "Israel" — "one who struggles with God."',mg:'Toerana niadian\'i Jakoba tamin\'ny anjely. Eto no nahazoany ny anarana hoe "Israely".'},
+    people:['Jacob'],
+    color:'#b8860b',
+    events:[
+      {ref:'Gen 32:22-32',title:{fr:'Jacob lutte avec l\'ange',en:'Jacob wrestles with the angel',mg:'Niady tamin\'ny anjely i Jakoba'},desc:{fr:'La nuit avant la rencontre avec Ésaü, Jacob lutte seul avec un inconnu jusqu\'à l\'aube. L\'inconnu le bénit et lui donne le nom "Israël". Jacob comprend qu\'il a "vu Dieu face à face".',en:'The night before meeting Esau, Jacob wrestles alone with a stranger until dawn. The stranger blesses him and gives him the name "Israel." Jacob understands he has "seen God face to face."',mg:'Ny alina talohan\'ny fihaonany tamin\'i Esao, niady tamin\'ny vahiny iray i Jakoba hatramin\'ny maraina. Notsoiny hoe "Israely" izy.'},hist:{fr:'Ce passage est l\'un des plus mystérieux de la Bible — théologiens et exégètes débattent depuis des siècles de son sens.',en:'This passage is one of the most mysterious in the Bible — theologians and exegetes have debated its meaning for centuries.',mg:'Io andalana io dia isan\'ny mistéra lehibe indrindra ao amin\'ny Baiboly.'},era:'AT'}
+    ]
+  },
+  egypte_joseph: {
+    x:68, y:470,
+    name:{fr:'Égypte — Joseph',en:'Egypt — Joseph',mg:'Egypta — Josefa'},
+    modern:{fr:'Égypte (Nil, delta)',en:'Egypt (Nile, delta)',mg:'Egypta (Ny Neily, delta)'},
+    era:'AT',
+    context:{fr:'Joseph est vendu comme esclave en Égypte, emprisonné injustement, puis élevé au rang de vice-roi par Pharaon grâce à son don d\'interpréter les songes. Il sauve l\'Égypte et ses frères de la famine.',en:'Joseph is sold as a slave in Egypt, unjustly imprisoned, then raised to viceroy by Pharaoh because of his gift for interpreting dreams. He saves Egypt and his brothers from famine.',mg:'Nafatotry ny Farao ho tale faharoa i Josefa taorian\'ny nandikany ny nofy. Namonjy an\'i Egypta sy ny rahalahiny tamin\'ny mosary izy.'},
+    people:['Joseph','Pharaon','Potiphar','ses frères','Jacob'],
+    color:'#556b2f',
+    events:[
+      {ref:'Gen 39-41',title:{fr:'Joseph de l\'esclavage au trône',en:'Joseph from slavery to throne',mg:'Josefa avy amin\'ny fanandevozana ka hatramin\'ny seza fiandrianana'},desc:{fr:'Joseph, esclave de Potiphar, est emprisonné après une fausse accusation. En prison, il interprète les songes. Pharaon l\'appelle pour interpréter ses propres rêves : 7 vaches grasses, 7 vaches maigres. Joseph prédit 7 ans d\'abondance et 7 de famine.',en:'Joseph, slave of Potiphar, is imprisoned after a false accusation. In prison, he interprets dreams. Pharaoh calls him to interpret his own dreams: 7 fat cows, 7 thin cows. Joseph predicts 7 years of plenty and 7 of famine.',mg:'Nogadraina fotsiny i Josefa. Nantsoina nandika ny nofy i Josefa: ombivavy 7 matavy sy 7 lena. Nilaza ny taonan\'ny fahavokaran\'ny famine i Josefa.'},hist:{fr:'Les archives égyptiennes mentionnent des famines cycliques liées aux crues du Nil. Le titre de Joseph correspond à des fonctions connues sous le Moyen Empire.',en:'Egyptian records mention cyclical famines linked to Nile floods. Joseph\'s title corresponds to known functions under the Middle Kingdom.',mg:'Ny rakisoratra egyptiana dia milaza ny amin\'ny mosary niforona tsimokamokan\'ny Neily.'},era:'AT'},
+      {ref:'Gen 42-46',title:{fr:'Réconciliation avec ses frères',en:'Reconciliation with his brothers',mg:'Nampihavanavina tamin\'ny rahalahiny'},desc:{fr:'Les frères de Joseph viennent en Égypte acheter du grain. Joseph les reconnaît mais ne se révèle pas d\'abord. Après épreuves, il se révèle en pleurant : "Je suis Joseph votre frère !" Jacob descend en Égypte avec toute sa famille.',en:'Joseph\'s brothers come to Egypt to buy grain. Joseph recognizes them but doesn\'t reveal himself at first. After tests, he reveals himself weeping: "I am Joseph your brother!" Jacob comes to Egypt with all his family.',mg:'Tonga tany Egypta hividy vary ny rahalahin\'i Josefa. Nahalala azy ireo i Josefa nefa tsy naneho tena. Nanambara ny tenany tamin\'ny ranomaso izy: "Izaho no Josefa rahalahinareo!"'},hist:{fr:'La descente de Jacob en Égypte prépare l\'Exode — Israël passera 400 ans en Égypte avant Moïse.',en:'Jacob\'s descent into Egypt prepares for the Exodus — Israel will spend 400 years in Egypt before Moses.',mg:'Ny nidinin\'i Jakoba tany Egypta dia manomana ny Fivoahana — 400 taona any Egypta Israely.'},era:'AT'}
+    ]
+  },
+  mambre: {
+    x:254, y:344,
+    name:{fr:'Chênes de Mambré',en:'Oaks of Mamre',mg:'Hazo oakan\'i Mamre'},
+    modern:{fr:'Près d\'Hébron, Cisjordanie',en:'Near Hebron, West Bank',mg:'Akaikin\'i Hebrona, Ranomasimbe Andrefana'},
+    era:'AT',
+    context:{fr:'Bosquet de chênes près d\'Hébron où Abraham établit sa demeure principale. Lieu de plusieurs théophanies importantes. La tradition chrétienne y voit une figure de la Trinité dans la visite des trois anges.',en:'Oak grove near Hebron where Abraham established his main dwelling. Site of several important theophanies. Christian tradition sees a figure of the Trinity in the visit of three angels.',mg:'Tanimbozaka teo akaikin\'i Hebrona izay niorian\'i Abrahama. Toerana nisehoana sy fampahafantarana maro.'},
+    people:['Abraham','Sara','Isaac','anges'],
+    color:'#b8860b',
+    events:[
+      {ref:'Gen 13:18',title:{fr:'Abraham s\'installe à Mambré',en:'Abraham settles at Mamre',mg:'Niorina tany Mamre i Abrahama'},desc:{fr:'Après la séparation d\'avec Lot, Abraham dresse sa tente près des chênes de Mambré et bâtit un autel.',en:'After separating from Lot, Abraham pitches his tent near the oaks of Mamre and builds an altar.',mg:'Nanainga ny lainy teo akaikin\'ny hazo oakan\'i Mamre i Abrahama ary nanorina alitara.'},hist:{fr:'Les chênes de Mambré sont mentionnés 4 fois dans la Genèse — lieu central de la vie d\'Abraham.',en:'The oaks of Mamre are mentioned 4 times in Genesis — central site of Abraham\'s life.',mg:'Voatonona 4 indray ao amin\'ny Genesisy ny hazo oakan\'i Mamre.'},era:'AT'},
+      {ref:'Gen 18:1-15',title:{fr:'Visite des trois anges',en:'Visit of three angels',mg:'Fitsidihan\'ny anjely telo'},desc:{fr:'Trois visiteurs mystérieux arrivent chez Abraham. Il les accueille avec générosité. Ils lui annoncent que Sara, âgée de 90 ans, donnera naissance à un fils dans un an. Sara rit d\'incrédulité.',en:'Three mysterious visitors arrive at Abraham\'s tent. He welcomes them with generosity. They announce that Sara, aged 90, will bear a son within a year. Sarah laughs in disbelief.',mg:'Mpitsidika telo avy tany Abrahama. Nampahafantatra fa hiteraka zazalahy i Sara, tamin\'ny fahefapolo taonany, ao anatin\'ny taona iray.'},hist:{fr:'Les Pères de l\'Église (notamment Rublev dans son icône) voient dans les trois visiteurs une révélation anticipée de la Trinité.',en:'Church Fathers (notably Rublev in his icon) see in the three visitors an anticipated revelation of the Trinity.',mg:'Ny Ray masina sasany dia mahita ny Trinita ao amin\'ireo mpitsidika telo ireo.'},era:'AT'}
+    ]
+  },
+
   damas: {
     x:352, y:112,
     name:{fr:'Damas',en:'Damascus',mg:'Damaskosy'},
@@ -662,6 +791,7 @@ function renderPlaceDetail(id) {
   let filtered = p.events;
   if (currentFilter === 'AT') filtered = p.events.filter(e => e.era === 'AT');
   if (currentFilter === 'NT') filtered = p.events.filter(e => e.era === 'NT');
+  if (currentFilter === 'Genèse') filtered = p.events.filter(e => e.ref && e.ref.startsWith('Gen'));
 
   let html = `<p class="place-name">${t(p.name)}</p>
     <p class="place-loc">${t(p.modern)}</p>
@@ -808,10 +938,62 @@ renderMapDots();
 renderParcours();
 </script>
 
+<!-- PWA Cache hors-ligne -->
 <script>
+// Mise en cache de toute la page pour le mode hors-ligne
+if ('caches' in window) {
+  window.addEventListener('load', () => {
+    caches.open('atlas-biblique-v1').then(cache => {
+      cache.add(window.location.href).catch(() => {});
+    });
+  });
+}
+
+// Service Worker inline via Blob
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/atlas-biblique/sw.js')
-    .then(() => console.log('SW OK'))
-    .catch(e => console.log('SW erreur:', e));
+  const swCode = `
+const CACHE_NAME = 'atlas-biblique-v1';
+const urlsToCache = [self.location.href];
+
+self.addEventListener('install', event => {
+  event.waitUntil(
+    caches.open(CACHE_NAME).then(cache => {
+      return fetch(self.registration.scope).then(response => {
+        return cache.put(self.registration.scope, response);
+      }).catch(() => {});
+    })
+  );
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', event => {
+  event.waitUntil(self.clients.claim());
+});
+
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    caches.match(event.request).then(response => {
+      if (response) return response;
+      return fetch(event.request).then(fetchResponse => {
+        if (!fetchResponse || fetchResponse.status !== 200) return fetchResponse;
+        const responseToCache = fetchResponse.clone();
+        caches.open(CACHE_NAME).then(cache => {
+          cache.put(event.request, responseToCache);
+        });
+        return fetchResponse;
+      }).catch(() => caches.match(event.request));
+    })
+  );
+});`;
+
+  const blob = new Blob([swCode], {type: 'application/javascript'});
+  const swUrl = URL.createObjectURL(blob);
+  navigator.serviceWorker.register(swUrl, {scope: './'}).then(reg => {
+    console.log('SW enregistré');
+  }).catch(err => {
+    console.log('SW erreur:', err);
+  });
 }
 </script>
+</body>
+</html>
