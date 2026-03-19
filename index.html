@@ -822,9 +822,10 @@ function renderMapDots() {
   const svg = document.getElementById('map-dots');
   svg.innerHTML = '';
   Object.entries(PLACES).forEach(([id, p]) => {
+    const matches = placeMatchesFilter(p, currentFilter);
     const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-    g.style.cursor = 'pointer';
-    g.onclick = () => selectPlace(id);
+    g.style.cursor = matches ? 'pointer' : 'default';
+    if (matches) g.onclick = () => selectPlace(id);
 
     const isActive = activePlace === id;
     const col = p.color || DOT_COLORS[p.era] || '#556b2f';
@@ -832,18 +833,20 @@ function renderMapDots() {
     const outer = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
     outer.setAttribute('cx', p.x); outer.setAttribute('cy', p.y);
     outer.setAttribute('r', isActive ? '10' : '7');
-    outer.setAttribute('fill', col);
-    outer.setAttribute('opacity', isActive ? '1' : '0.75');
+    outer.setAttribute('fill', matches ? col : '#aaa');
+    outer.setAttribute('opacity', isActive ? '1' : matches ? '0.75' : '0.25');
     if (isActive) { outer.setAttribute('stroke', '#f5ead0'); outer.setAttribute('stroke-width', '2'); }
 
     const inner = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
     inner.setAttribute('cx', p.x); inner.setAttribute('cy', p.y);
     inner.setAttribute('r', '3');
-    inner.setAttribute('fill', 'white'); inner.setAttribute('opacity', '0.85');
+    inner.setAttribute('fill', 'white'); inner.setAttribute('opacity', matches ? '0.85' : '0.3');
 
     const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
     label.setAttribute('x', p.x + 11); label.setAttribute('y', p.y + 4);
-    label.setAttribute('font-size', '9'); label.setAttribute('fill', '#2c1f0e');
+    label.setAttribute('font-size', '9');
+    label.setAttribute('fill', matches ? '#2c1f0e' : '#999');
+    label.setAttribute('opacity', matches ? '1' : '0.35');
     label.setAttribute('font-family', 'Cinzel, serif'); label.setAttribute('pointer-events', 'none');
     label.textContent = t(p.name);
 
@@ -852,11 +855,26 @@ function renderMapDots() {
   });
 }
 
+function placeMatchesFilter(p, filter) {
+  if (filter === 'tous') return true;
+  if (filter === 'AT') return p.era === 'AT' || p.era === 'both';
+  if (filter === 'NT') return p.era === 'NT' || p.era === 'both';
+  if (filter === 'Genèse') return p.events.some(e => e.ref && e.ref.startsWith('Gen'));
+  if (filter === 'Exode') return p.events.some(e => e.ref && (e.ref.startsWith('Ex') || e.ref.startsWith('Nb') || e.ref.startsWith('Deut')));
+  return true;
+}
+
 function setFilter(f, btn) {
   currentFilter = f;
   document.querySelectorAll('.fbtn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  if (activePlace) renderPlaceDetail(activePlace);
+  renderMapDots();
+  if (activePlace && placeMatchesFilter(PLACES[activePlace], f)) {
+    renderPlaceDetail(activePlace);
+  } else {
+    activePlace = null;
+    document.getElementById('place-detail').innerHTML = '<p class="place-empty">Sélectionne un lieu sur la carte.</p>';
+  }
 }
 
 function selectPlace(id) {
