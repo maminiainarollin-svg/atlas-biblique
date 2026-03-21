@@ -134,9 +134,14 @@ body { font-family: 'EB Garamond', Georgia, serif; color: var(--ink); }
   width: 100%; background: var(--ink2);
   display: flex; align-items: center; justify-content: center;
   border-bottom: 1px solid var(--border); overflow: hidden;
-  min-height: 120px;
+  min-height: 160px; max-height: 240px;
 }
-.ev-illustration svg { width: 100%; max-height: 160px; }
+.ev-illustration img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center top;
+  filter: sepia(20%) contrast(1.05);
+  display: block;
+}
 .ev-body { padding: 12px 14px; }
 .ev-ref { font-family: 'Cinzel', serif; font-size: 11px; color: var(--gold); font-weight: 600; margin-bottom: 4px; letter-spacing: 0.05em; }
 .ev-title { font-family: 'Cinzel', serif; font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
@@ -201,547 +206,55 @@ body { font-family: 'EB Garamond', Georgia, serif; color: var(--ink); }
 
 <script>
 // ============================================================
-// ILLUSTRATIONS SVG — style gravure XIXème siècle
+// ILLUSTRATIONS — Gravures de Gustave Doré (1866) — Domaine public
 // ============================================================
+const BASE = 'https://www.creationism.org/images/DoreBibleIllus/';
 const ILLUS = {
-
   // NOÉ
-  noe_arche: `<svg viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg">
-    <rect width="320" height="140" fill="#1a1008"/>
-    <!-- Ciel orageux -->
-    <rect x="0" y="0" width="320" height="70" fill="#0d0d1a"/>
-    <path d="M0 40 Q40 20 80 35 Q120 50 160 30 Q200 10 240 25 Q280 40 320 20 L320 0 L0 0Z" fill="#1a1a2e" opacity="0.8"/>
-    <!-- Nuages -->
-    <ellipse cx="80" cy="25" rx="50" ry="15" fill="#2a2a3e" opacity="0.7"/>
-    <ellipse cx="200" cy="18" rx="60" ry="18" fill="#2a2a3e" opacity="0.6"/>
-    <ellipse cx="290" cy="30" rx="40" ry="12" fill="#2a2a3e" opacity="0.5"/>
-    <!-- Pluie -->
-    <line x1="60" y1="0" x2="50" y2="70" stroke="#3a4a6a" stroke-width="0.5" opacity="0.4"/>
-    <line x1="100" y1="0" x2="90" y2="70" stroke="#3a4a6a" stroke-width="0.5" opacity="0.4"/>
-    <line x1="140" y1="0" x2="130" y2="70" stroke="#3a4a6a" stroke-width="0.5" opacity="0.4"/>
-    <line x1="180" y1="0" x2="170" y2="70" stroke="#3a4a6a" stroke-width="0.5" opacity="0.4"/>
-    <line x1="220" y1="0" x2="210" y2="70" stroke="#3a4a6a" stroke-width="0.5" opacity="0.4"/>
-    <line x1="260" y1="0" x2="250" y2="70" stroke="#3a4a6a" stroke-width="0.5" opacity="0.4"/>
-    <line x1="300" y1="0" x2="290" y2="70" stroke="#3a4a6a" stroke-width="0.5" opacity="0.4"/>
-    <!-- Eau -->
-    <path d="M0 95 Q40 85 80 95 Q120 105 160 92 Q200 79 240 92 Q280 105 320 90 L320 140 L0 140Z" fill="#1a3050"/>
-    <path d="M0 100 Q50 90 100 100 Q150 110 200 98 Q250 86 300 98 L320 95 L320 140 L0 140Z" fill="#1a2840" opacity="0.7"/>
-    <!-- Arche -->
-    <rect x="60" y="72" width="200" height="35" rx="4" fill="#3d2800" stroke="#6b4a1a" stroke-width="1"/>
-    <rect x="80" y="58" width="160" height="18" rx="3" fill="#4d3810" stroke="#6b4a1a" stroke-width="0.8"/>
-    <rect x="130" y="44" width="60" height="18" rx="3" fill="#5d4820" stroke="#8b6830" stroke-width="0.8"/>
-    <!-- Fenêtres arche -->
-    <rect x="90" y="65" width="12" height="8" rx="1" fill="#1a0e00" stroke="#8b6830" stroke-width="0.5"/>
-    <rect x="110" y="65" width="12" height="8" rx="1" fill="#1a0e00" stroke="#8b6830" stroke-width="0.5"/>
-    <rect x="198" y="65" width="12" height="8" rx="1" fill="#1a0e00" stroke="#8b6830" stroke-width="0.5"/>
-    <rect x="218" y="65" width="12" height="8" rx="1" fill="#1a0e00" stroke="#8b6830" stroke-width="0.5"/>
-    <!-- Colombes -->
-    <path d="M155 35 Q160 30 168 32 Q163 36 165 40 Q158 38 155 35Z" fill="#c8b890" stroke="#a09070" stroke-width="0.5"/>
-    <path d="M168 32 Q175 28 180 31 Q176 35 178 38 Q170 37 168 32Z" fill="#c8b890" stroke="#a09070" stroke-width="0.5"/>
-    <!-- Rayon de lumière -->
-    <path d="M155 0 L140 50 L170 50Z" fill="#c8a020" opacity="0.15"/>
-    <!-- Signature style gravure -->
-    <text x="8" y="135" font-size="7" fill="#6b4a1a" opacity="0.6" font-style="italic">Gen. 6-9</text>
-  </svg>`,
-
-  noe_arc: `<svg viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg">
-    <rect width="320" height="140" fill="#1a1008"/>
-    <rect x="0" y="0" width="320" height="90" fill="#1a2840"/>
-    <!-- Arc-en-ciel -->
-    <path d="M20 90 Q160 10 300 90" stroke="#e8a020" stroke-width="3" fill="none" opacity="0.9"/>
-    <path d="M30 90 Q160 20 290 90" stroke="#d04020" stroke-width="2" fill="none" opacity="0.7"/>
-    <path d="M10 90 Q160 0 310 90" stroke="#20a060" stroke-width="2" fill="none" opacity="0.7"/>
-    <path d="M5 90 Q160 -8 315 90" stroke="#4060c0" stroke-width="1.5" fill="none" opacity="0.6"/>
-    <!-- Soleil perçant -->
-    <circle cx="160" cy="30" r="18" fill="#c8a020" opacity="0.3"/>
-    <circle cx="160" cy="30" r="10" fill="#e8c040" opacity="0.5"/>
-    <!-- Sol et collines -->
-    <path d="M0 90 Q80 75 160 85 Q240 95 320 80 L320 140 L0 140Z" fill="#2a1800"/>
-    <path d="M0 100 Q60 88 120 98 Q180 108 240 95 Q280 86 320 92 L320 140 L0 140Z" fill="#1e1000"/>
-    <!-- Noé et famille -->
-    <rect x="120" y="88" width="8" height="22" rx="2" fill="#4d3810"/>
-    <circle cx="124" cy="85" r="5" fill="#6b4a1a"/>
-    <rect x="140" y="90" width="6" height="18" rx="2" fill="#3d2800"/>
-    <circle cx="143" cy="87" r="4" fill="#5d3a10"/>
-    <rect x="158" y="90" width="6" height="18" rx="2" fill="#4d3810"/>
-    <circle cx="161" cy="87" r="4" fill="#6b4a1a"/>
-    <!-- Arche à l'arrière-plan -->
-    <rect x="200" y="82" width="80" height="18" rx="2" fill="#3d2800" opacity="0.7"/>
-    <text x="8" y="135" font-size="7" fill="#6b4a1a" opacity="0.6" font-style="italic">Gen. 9</text>
-  </svg>`,
-
+  noe_construction: BASE + 'aGen0724Dore_TheWorldDestroyedByWater.jpg',
+  noe_arche:        BASE + 'aGen0803Dore_TheDeluge.jpg',
+  noe_arc:          BASE + 'aGen0811Dore_TheDoveSentForthFromTheArk.jpg',
   // ABRAHAM
-  abr_appel: `<svg viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg">
-    <rect width="320" height="140" fill="#1a1008"/>
-    <!-- Nuit étoilée -->
-    <rect x="0" y="0" width="320" height="85" fill="#080818"/>
-    <circle cx="50" cy="20" r="1.5" fill="white" opacity="0.8"/>
-    <circle cx="90" cy="12" r="1" fill="white" opacity="0.7"/>
-    <circle cx="130" cy="25" r="1.5" fill="white" opacity="0.9"/>
-    <circle cx="170" cy="10" r="1" fill="white" opacity="0.6"/>
-    <circle cx="210" cy="18" r="2" fill="white" opacity="0.8"/>
-    <circle cx="240" cy="8" r="1" fill="white" opacity="0.7"/>
-    <circle cx="270" cy="22" r="1.5" fill="white" opacity="0.9"/>
-    <circle cx="300" cy="15" r="1" fill="white" opacity="0.6"/>
-    <circle cx="75" cy="35" r="1" fill="white" opacity="0.5"/>
-    <circle cx="195" cy="40" r="1.5" fill="white" opacity="0.7"/>
-    <circle cx="255" cy="35" r="1" fill="white" opacity="0.8"/>
-    <!-- Lumière divine descend -->
-    <path d="M160 0 L130 85 L190 85Z" fill="#c8a020" opacity="0.12"/>
-    <path d="M160 0 L148 85 L172 85Z" fill="#e8c040" opacity="0.18"/>
-    <!-- Sol désertique -->
-    <path d="M0 85 Q80 78 160 83 Q240 88 320 80 L320 140 L0 140Z" fill="#2a1800"/>
-    <path d="M0 100 Q100 92 200 102 Q260 108 320 98 L320 140 L0 140Z" fill="#1e1000"/>
-    <!-- Tente -->
-    <path d="M30 85 L65 60 L100 85Z" fill="#3d2800" stroke="#6b4a1a" stroke-width="0.8"/>
-    <rect x="50" y="75" width="15" height="10" fill="#1a0e00"/>
-    <!-- Abraham agenouillé -->
-    <rect x="148" y="95" width="7" height="15" rx="2" fill="#4d3810"/>
-    <rect x="145" y="100" width="12" height="8" rx="2" fill="#3d2800"/>
-    <circle cx="152" cy="92" r="6" fill="#6b4a1a"/>
-    <!-- Bras levés -->
-    <line x1="145" y1="98" x2="135" y2="90" stroke="#4d3810" stroke-width="2.5"/>
-    <line x1="159" y1="98" x2="169" y2="90" stroke="#4d3810" stroke-width="2.5"/>
-    <text x="8" y="135" font-size="7" fill="#6b4a1a" opacity="0.6" font-style="italic">Gen. 12</text>
-  </svg>`,
-
-  abr_isaac: `<svg viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg">
-    <rect width="320" height="140" fill="#1a1008"/>
-    <!-- Ciel -->
-    <rect x="0" y="0" width="320" height="80" fill="#1a1008"/>
-    <!-- Montagne Morija -->
-    <path d="M0 140 Q80 40 160 30 Q240 20 320 140Z" fill="#2a1800"/>
-    <path d="M0 140 Q60 70 120 60 Q160 55 200 80 Q240 100 320 140Z" fill="#1e1000"/>
-    <!-- Rocher autel -->
-    <rect x="125" y="72" width="70" height="20" rx="3" fill="#3d2800" stroke="#6b4a1a" stroke-width="0.8"/>
-    <rect x="130" y="60" width="60" height="14" rx="2" fill="#2a1800" stroke="#5c3d1a" stroke-width="0.5"/>
-    <!-- Flamme sur l'autel -->
-    <path d="M155 58 Q160 45 165 50 Q168 40 172 48 Q175 35 178 50 Q182 42 180 58 Q170 52 160 58Z" fill="#c84020" opacity="0.85"/>
-    <path d="M158 58 Q162 48 166 52 Q169 44 173 52 Q176 44 174 58 Q168 54 158 58Z" fill="#e8a020" opacity="0.9"/>
-    <!-- Lumière céleste -->
-    <path d="M160 0 L145 60 L175 60Z" fill="#e8c040" opacity="0.2"/>
-    <!-- Abraham -->
-    <rect x="100" y="80" width="8" height="30" rx="2" fill="#4d3810"/>
-    <circle cx="104" cy="77" r="6" fill="#6b4a1a"/>
-    <line x1="108" y1="85" x2="120" y2="75" stroke="#4d3810" stroke-width="2.5"/>
-    <!-- Isaac allongé -->
-    <rect x="132" y="62" width="55" height="8" rx="2" fill="#5d4020"/>
-    <circle cx="185" cy="63" r="5" fill="#6b4a1a"/>
-    <!-- Ange -->
-    <ellipse cx="160" cy="20" rx="12" ry="8" fill="#c8a020" opacity="0.3"/>
-    <path d="M148 18 Q160 8 172 18" stroke="#e8c040" stroke-width="1.5" fill="none" opacity="0.7"/>
-    <circle cx="160" cy="16" r="4" fill="#e8c040" opacity="0.5"/>
-    <!-- Bélier -->
-    <ellipse cx="230" cy="100" rx="15" ry="8" fill="#5d4820"/>
-    <circle cx="243" cy="95" r="5" fill="#5d4820"/>
-    <path d="M238 92 Q244 86 248 90" stroke="#4d3810" stroke-width="1.5" fill="none"/>
-    <text x="8" y="135" font-size="7" fill="#6b4a1a" opacity="0.6" font-style="italic">Gen. 22</text>
-  </svg>`,
-
+  abr_appel:        BASE + 'aGen1201Dore_AbrahamJourneyingIntoTheLandOfCanaan.jpg',
+  abr_anges:        BASE + 'aGen1809Dore_AbrahamAndTheThreeAngels.jpg',
+  abr_isaac:        BASE + 'aGen2210Dore_TheTrialOfAbraham_sFaith.jpg',
+  abr_hagar:        BASE + 'aGen2117Dore_HagarAndIshmaelInTheWilderness.jpg',
+  abr_alliance:     BASE + 'aGen1201Dore_AbrahamJourneyingIntoTheLandOfCanaan.jpg',
   // MOÏSE
-  moise_buisson: `<svg viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg">
-    <rect width="320" height="140" fill="#1a1008"/>
-    <!-- Ciel désertique -->
-    <rect x="0" y="0" width="320" height="75" fill="#1a0e00"/>
-    <!-- Désert rocheux -->
-    <path d="M0 75 Q50 60 100 70 Q150 80 200 65 Q250 50 320 70 L320 140 L0 140Z" fill="#2a1800"/>
-    <path d="M0 100 Q70 88 140 98 Q210 108 320 95 L320 140 L0 140Z" fill="#1e1000"/>
-    <!-- Rochers -->
-    <ellipse cx="240" cy="90" rx="30" ry="15" fill="#2e1c08"/>
-    <ellipse cx="280" cy="95" rx="20" ry="10" fill="#261408"/>
-    <!-- Buisson ardent -->
-    <!-- Branches -->
-    <path d="M150 100 Q155 85 160 80" stroke="#3d2800" stroke-width="2" fill="none"/>
-    <path d="M160 100 Q162 82 165 75" stroke="#3d2800" stroke-width="2" fill="none"/>
-    <path d="M170 100 Q168 84 163 78" stroke="#3d2800" stroke-width="2" fill="none"/>
-    <path d="M155 90 Q148 80 143 75" stroke="#3d2800" stroke-width="1.5" fill="none"/>
-    <path d="M165 88 Q172 78 178 73" stroke="#3d2800" stroke-width="1.5" fill="none"/>
-    <!-- Flammes -->
-    <path d="M143 75 Q150 55 158 65 Q162 50 168 62 Q173 48 178 63 Q185 45 188 65 Q180 72 160 78 Q145 82 143 75Z" fill="#c84020" opacity="0.9"/>
-    <path d="M148 72 Q154 56 160 66 Q164 52 169 63 Q174 50 179 64 Q173 70 160 74 Q150 76 148 72Z" fill="#e8a020" opacity="0.95"/>
-    <path d="M153 70 Q158 58 163 67 Q167 56 172 66 Q167 70 160 72 Q155 72 153 70Z" fill="#f8e040" opacity="0.9"/>
-    <!-- Lueur divine au centre -->
-    <circle cx="163" cy="65" r="8" fill="white" opacity="0.2"/>
-    <!-- Rayons de lumière -->
-    <path d="M163 65 L130 30" stroke="#e8c040" stroke-width="0.5" opacity="0.3"/>
-    <path d="M163 65 L163 20" stroke="#e8c040" stroke-width="0.5" opacity="0.3"/>
-    <path d="M163 65 L196 30" stroke="#e8c040" stroke-width="0.5" opacity="0.3"/>
-    <!-- Moïse déchaussé, prostré -->
-    <rect x="88" y="95" width="8" height="25" rx="2" fill="#4d3810"/>
-    <rect x="82" y="105" width="18" height="10" rx="2" fill="#3d2800"/>
-    <circle cx="92" cy="92" r="6" fill="#6b4a1a"/>
-    <!-- Sandales -->
-    <ellipse cx="85" cy="122" rx="7" ry="3" fill="#3d2800" opacity="0.6"/>
-    <ellipse cx="98" cy="123" rx="6" ry="3" fill="#3d2800" opacity="0.6"/>
-    <text x="8" y="135" font-size="7" fill="#6b4a1a" opacity="0.6" font-style="italic">Ex. 3</text>
-  </svg>`,
-
-  moise_sinai: `<svg viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg">
-    <rect width="320" height="140" fill="#080818"/>
-    <!-- Ciel tempétueux -->
-    <rect x="0" y="0" width="320" height="75" fill="#080818"/>
-    <!-- Nuée sur la montagne -->
-    <ellipse cx="160" cy="35" rx="100" ry="40" fill="#1a1a2e" opacity="0.9"/>
-    <ellipse cx="160" cy="30" rx="70" ry="28" fill="#2a2a3e" opacity="0.8"/>
-    <!-- Éclairs -->
-    <path d="M140 15 L155 35 L145 35 L165 60" stroke="#e8e820" stroke-width="1.5" fill="none" opacity="0.85"/>
-    <path d="M190 20 L178 38 L188 36 L172 58" stroke="#e8e820" stroke-width="1" fill="none" opacity="0.65"/>
-    <!-- Feu sur la montagne -->
-    <path d="M110 75 Q140 50 160 45 Q180 50 210 75Z" fill="#c84020" opacity="0.4"/>
-    <path d="M120 75 Q150 55 160 50 Q170 55 200 75Z" fill="#e8a020" opacity="0.3"/>
-    <!-- Montagne -->
-    <path d="M0 140 Q60 60 120 55 Q160 52 200 60 Q260 75 320 140Z" fill="#1e1000"/>
-    <path d="M0 140 Q80 85 160 80 Q240 75 320 140Z" fill="#2a1800"/>
-    <!-- Moïse au sommet -->
-    <rect x="152" y="70" width="7" height="22" rx="2" fill="#4d3810"/>
-    <circle cx="156" cy="67" r="6" fill="#6b4a1a"/>
-    <!-- Tables de la loi -->
-    <rect x="162" y="72" width="14" height="16" rx="2" fill="#c8b890" stroke="#8b6830" stroke-width="0.8"/>
-    <line x1="169" y1="74" x2="169" y2="87" stroke="#6b4a1a" stroke-width="0.5"/>
-    <!-- Peuple en bas -->
-    <rect x="40" y="115" width="5" height="12" rx="1" fill="#3d2800" opacity="0.7"/>
-    <rect x="55" y="112" width="5" height="15" rx="1" fill="#4d3810" opacity="0.7"/>
-    <rect x="70" y="114" width="5" height="13" rx="1" fill="#3d2800" opacity="0.7"/>
-    <rect x="240" y="115" width="5" height="12" rx="1" fill="#3d2800" opacity="0.7"/>
-    <rect x="255" y="113" width="5" height="14" rx="1" fill="#4d3810" opacity="0.7"/>
-    <text x="8" y="135" font-size="7" fill="#6b4a1a" opacity="0.6" font-style="italic">Ex. 19-20</text>
-  </svg>`,
-
+  moise_nil:        BASE + 'bExo0203Dore_TheChildMosesOnTheNile.jpg',
+  moise_buisson:    BASE + 'bExo0710Dore_MosesAndAaronBeforePharaoh.jpg',
+  moise_sinai:      BASE + 'bExo1918Dore_TheGivingOfTheLawUponMountSinai.jpg',
+  moise_tables:     BASE + 'bExo3215Dore_MosesComingDownFromMountSinai.jpg',
+  moise_serpent:    BASE + 'cNum2109Dore_TheBrazenSerpent.jpg',
   // DAVID
-  david_goliat: `<svg viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg">
-    <rect width="320" height="140" fill="#1a1008"/>
-    <!-- Ciel de bataille -->
-    <rect x="0" y="0" width="320" height="70" fill="#0d1020"/>
-    <ellipse cx="100" cy="30" rx="60" ry="20" fill="#1a1a28" opacity="0.7"/>
-    <ellipse cx="230" cy="25" rx="50" ry="15" fill="#1a1a28" opacity="0.6"/>
-    <!-- Sol -->
-    <path d="M0 70 Q80 62 160 68 Q240 74 320 65 L320 140 L0 140Z" fill="#1e1400"/>
-    <path d="M0 95 Q100 85 200 92 Q260 96 320 88 L320 140 L0 140Z" fill="#180e00"/>
-    <!-- Goliath géant -->
-    <rect x="220" y="30" width="20" height="70" rx="4" fill="#3a3040"/>
-    <circle cx="230" cy="26" r="12" fill="#4a3848"/>
-    <!-- Casque de Goliath -->
-    <path d="M218 26 Q230 14 242 26 L242 30 L218 30Z" fill="#5a4858" stroke="#8a7888" stroke-width="0.8"/>
-    <!-- Lance de Goliath -->
-    <line x1="250" y1="10" x2="245" y2="100" stroke="#8a7868" stroke-width="3"/>
-    <path d="M248 10 L255 10 L252 20Z" fill="#a08870"/>
-    <!-- Bouclier de Goliath -->
-    <ellipse cx="215" cy="65" rx="18" ry="22" fill="#4a3848" stroke="#8a7888" stroke-width="1"/>
-    <!-- David petit, frondeur -->
-    <rect x="82" y="82" width="8" height="28" rx="2" fill="#4d3810"/>
-    <circle cx="86" cy="79" r="6" fill="#6b4a1a"/>
-    <!-- Fronde levée -->
-    <path d="M86 82 Q75 65 65 55" stroke="#8b6830" stroke-width="1.5" fill="none"/>
-    <path d="M86 82 Q95 68 100 58" stroke="#8b6830" stroke-width="1.5" fill="none"/>
-    <circle cx="83" cy="70" r="3" fill="#c8b890"/>
-    <!-- Pierre en vol -->
-    <circle cx="155" cy="50" r="4" fill="#c8b890"/>
-    <path d="M100 60 Q130 48 155 50" stroke="#c8b890" stroke-width="0.8" fill="none" stroke-dasharray="3,3"/>
-    <!-- Armées en arrière-plan -->
-    <rect x="10" y="95" width="4" height="15" rx="1" fill="#3d2800" opacity="0.6"/>
-    <rect x="20" y="93" width="4" height="17" rx="1" fill="#3d2800" opacity="0.6"/>
-    <rect x="30" y="95" width="4" height="15" rx="1" fill="#3d2800" opacity="0.6"/>
-    <rect x="265" y="95" width="4" height="15" rx="1" fill="#3a3040" opacity="0.6"/>
-    <rect x="275" y="93" width="4" height="17" rx="1" fill="#3a3040" opacity="0.6"/>
-    <text x="8" y="135" font-size="7" fill="#6b4a1a" opacity="0.6" font-style="italic">1 Sam. 17</text>
-  </svg>`,
-
-  david_psaume: `<svg viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg">
-    <rect width="320" height="140" fill="#1a1008"/>
-    <!-- Coucher de soleil -->
-    <rect x="0" y="0" width="320" height="80" fill="#1a0e00"/>
-    <circle cx="160" cy="40" r="30" fill="#c84020" opacity="0.3"/>
-    <circle cx="160" cy="40" r="18" fill="#e8a020" opacity="0.4"/>
-    <!-- Collines de Judée -->
-    <path d="M0 80 Q60 55 120 65 Q160 72 200 60 Q250 45 320 70 L320 140 L0 140Z" fill="#2a1800"/>
-    <path d="M0 100 Q80 88 160 95 Q240 102 320 92 L320 140 L0 140Z" fill="#1e1000"/>
-    <!-- David assis sur un rocher -->
-    <ellipse cx="160" cy="100" rx="25" ry="10" fill="#2e1c08"/>
-    <rect x="153" y="78" width="10" height="28" rx="3" fill="#4d3810"/>
-    <circle cx="158" cy="74" r="8" fill="#6b4a1a"/>
-    <!-- Harpe -->
-    <path d="M168 80 Q185 72 190 85 Q185 95 168 98Z" stroke="#8b6830" stroke-width="1.5" fill="none"/>
-    <line x1="168" y1="80" x2="168" y2="98" stroke="#8b6830" stroke-width="1.5"/>
-    <line x1="172" y1="78" x2="172" y2="97" stroke="#c8a040" stroke-width="0.8"/>
-    <line x1="177" y1="76" x2="178" y2="95" stroke="#c8a040" stroke-width="0.8"/>
-    <line x1="182" y1="75" x2="184" y2="93" stroke="#c8a040" stroke-width="0.8"/>
-    <line x1="187" y1="76" x2="189" y2="91" stroke="#c8a040" stroke-width="0.8"/>
-    <!-- Étoiles -->
-    <circle cx="50" cy="20" r="1.5" fill="white" opacity="0.7"/>
-    <circle cx="100" cy="12" r="1" fill="white" opacity="0.6"/>
-    <circle cx="250" cy="18" r="1.5" fill="white" opacity="0.8"/>
-    <circle cx="290" cy="10" r="1" fill="white" opacity="0.7"/>
-    <!-- Moutons en arrière-plan -->
-    <ellipse cx="60" cy="108" rx="12" ry="6" fill="#c8b890" opacity="0.6"/>
-    <circle cx="70" cy="103" r="5" fill="#c8b890" opacity="0.6"/>
-    <ellipse cx="90" cy="110" rx="10" ry="5" fill="#c8b890" opacity="0.5"/>
-    <text x="8" y="135" font-size="7" fill="#6b4a1a" opacity="0.6" font-style="italic">Ps. 23</text>
-  </svg>`,
-
+  david_goliat:     BASE + 'g1Sa1750Dore_DavidAndGoliath.jpg',
+  david_psaume:     BASE + 'g1Sa2410Dore_DavidShowingSaul_SparedHisLife.jpg',
+  david_absalom:    BASE + 'g2Sa1833Dore_DavidMourningTheDeathOfAbsalom.jpg',
+  david_oint:       BASE + 'g1Sa0921Dore_SamuelBlessingSaul.jpg',
   // JÉSUS
-  jesus_naissance: `<svg viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg">
-    <rect width="320" height="140" fill="#1a1008"/>
-    <!-- Nuit -->
-    <rect x="0" y="0" width="320" height="80" fill="#080818"/>
-    <!-- Étoile de Bethléem -->
-    <circle cx="160" cy="20" r="8" fill="#e8c040" opacity="0.6"/>
-    <circle cx="160" cy="20" r="4" fill="#f8e860" opacity="0.9"/>
-    <line x1="160" y1="5" x2="160" y2="35" stroke="#e8c040" stroke-width="0.8" opacity="0.5"/>
-    <line x1="145" y1="20" x2="175" y2="20" stroke="#e8c040" stroke-width="0.8" opacity="0.5"/>
-    <line x1="149" y1="9" x2="171" y2="31" stroke="#e8c040" stroke-width="0.5" opacity="0.4"/>
-    <line x1="171" y1="9" x2="149" y2="31" stroke="#e8c040" stroke-width="0.5" opacity="0.4"/>
-    <!-- Étoiles -->
-    <circle cx="40" cy="15" r="1" fill="white" opacity="0.6"/>
-    <circle cx="80" cy="25" r="1.5" fill="white" opacity="0.7"/>
-    <circle cx="240" cy="18" r="1" fill="white" opacity="0.6"/>
-    <circle cx="280" cy="28" r="1.5" fill="white" opacity="0.8"/>
-    <!-- Étable -->
-    <path d="M60 80 L60 120 L260 120 L260 80 L160 55Z" fill="#2a1800" stroke="#6b4a1a" stroke-width="1"/>
-    <path d="M60 80 L160 55 L260 80Z" fill="#3d2800" stroke="#6b4a1a" stroke-width="0.8"/>
-    <!-- Intérieur éclairé -->
-    <rect x="65" y="82" width="190" height="36" fill="#2e1c08"/>
-    <!-- Lumière de l'enfant -->
-    <circle cx="160" cy="108" r="20" fill="#e8c040" opacity="0.15"/>
-    <circle cx="160" cy="108" r="10" fill="#f8e860" opacity="0.2"/>
-    <!-- Crèche -->
-    <rect x="138" y="100" width="44" height="18" rx="3" fill="#3d2800" stroke="#6b4a1a" stroke-width="0.8"/>
-    <ellipse cx="160" cy="104" rx="12" ry="6" fill="#f8e860" opacity="0.4"/>
-    <!-- Marie et Joseph -->
-    <rect x="98" y="85" width="8" height="35" rx="2" fill="#3d2800"/>
-    <circle cx="102" cy="82" r="6" fill="#6b4a1a"/>
-    <rect x="200" y="83" width="8" height="37" rx="2" fill="#4d3810"/>
-    <circle cx="204" cy="80" r="6" fill="#5d4020"/>
-    <!-- Animaux -->
-    <ellipse cx="78" cy="115" rx="12" ry="6" fill="#3d2800" opacity="0.8"/>
-    <circle cx="88" cy="110" r="5" fill="#4d3810" opacity="0.8"/>
-    <ellipse cx="248" cy="114" rx="14" ry="7" fill="#4d3810" opacity="0.7"/>
-    <text x="8" y="135" font-size="7" fill="#6b4a1a" opacity="0.6" font-style="italic">Luc 2</text>
-  </svg>`,
-
-  jesus_croix: `<svg viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg">
-    <rect width="320" height="140" fill="#080808"/>
-    <!-- Ciel obscurci -->
-    <rect x="0" y="0" width="320" height="80" fill="#080808"/>
-    <ellipse cx="160" cy="30" rx="150" ry="35" fill="#1a0808" opacity="0.9"/>
-    <!-- Rayons brisés de soleil -->
-    <path d="M160 0 L150 35 L170 35Z" fill="#4a2010" opacity="0.3"/>
-    <!-- Golgotha -->
-    <path d="M0 140 Q80 75 130 70 Q160 68 190 72 Q240 80 320 140Z" fill="#1a0e00"/>
-    <path d="M0 140 Q100 90 160 85 Q220 80 320 140Z" fill="#120800"/>
-    <!-- Trois croix -->
-    <!-- Croix centrale — grande -->
-    <rect x="154" y="30" width="12" height="80" rx="2" fill="#2a1800"/>
-    <rect x="135" y="52" width="50" height="10" rx="2" fill="#2a1800"/>
-    <!-- Croix gauche -->
-    <rect x="80" y="45" width="8" height="55" rx="1" fill="#1e1000"/>
-    <rect x="66" y="58" width="35" height="7" rx="1" fill="#1e1000"/>
-    <!-- Croix droite -->
-    <rect x="232" y="45" width="8" height="55" rx="1" fill="#1e1000"/>
-    <rect x="218" y="58" width="35" height="7" rx="1" fill="#1e1000"/>
-    <!-- Figure sur croix centrale -->
-    <rect x="158" y="52" width="4" height="25" rx="1" fill="#4d3020" opacity="0.8"/>
-    <line x1="138" y1="57" x2="158" y2="57" stroke="#4d3020" stroke-width="2"/>
-    <line x1="162" y1="57" x2="182" y2="57" stroke="#4d3020" stroke-width="2"/>
-    <circle cx="160" cy="50" r="5" fill="#5d3020" opacity="0.8"/>
-    <!-- Lueur derrière la croix -->
-    <path d="M160 0 L148 30 L172 30Z" fill="#c84020" opacity="0.1"/>
-    <!-- Soldats au bas -->
-    <rect x="60" y="110" width="6" height="20" rx="1" fill="#2a2030" opacity="0.7"/>
-    <rect x="240" y="110" width="6" height="20" rx="1" fill="#2a2030" opacity="0.7"/>
-    <rect x="250" y="108" width="6" height="22" rx="1" fill="#2a2030" opacity="0.6"/>
-    <!-- Titre INRI -->
-    <rect x="148" y="32" width="24" height="8" rx="1" fill="#c8b890" opacity="0.4"/>
-    <text x="152" y="39" font-size="5" fill="#1a0e00" font-family="serif">INRI</text>
-    <text x="8" y="135" font-size="7" fill="#6b4a1a" opacity="0.6" font-style="italic">Luc 23</text>
-  </svg>`,
-
-  jesus_resurrection: `<svg viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg">
-    <rect width="320" height="140" fill="#080818"/>
-    <!-- Aube -->
-    <rect x="0" y="0" width="320" height="80" fill="#1a0e00"/>
-    <!-- Rayons de l'aube -->
-    <path d="M160 80 L60 0 L80 0Z" fill="#e8c040" opacity="0.08"/>
-    <path d="M160 80 L100 0 L130 0Z" fill="#e8c040" opacity="0.1"/>
-    <path d="M160 80 L145 0 L175 0Z" fill="#f8e060" opacity="0.15"/>
-    <path d="M160 80 L190 0 L220 0Z" fill="#e8c040" opacity="0.1"/>
-    <path d="M160 80 L240 0 L260 0Z" fill="#e8c040" opacity="0.08"/>
-    <!-- Soleil levant -->
-    <circle cx="160" cy="15" r="20" fill="#e8a020" opacity="0.25"/>
-    <circle cx="160" cy="15" r="12" fill="#f8c040" opacity="0.35"/>
-    <circle cx="160" cy="15" r="6" fill="#f8e060" opacity="0.5"/>
-    <!-- Sol -->
-    <path d="M0 80 Q80 70 160 75 Q240 80 320 68 L320 140 L0 140Z" fill="#1e1000"/>
-    <path d="M0 100 Q100 88 200 96 Q260 100 320 92 L320 140 L0 140Z" fill="#180e00"/>
-    <!-- Tombeau ouvert -->
-    <ellipse cx="160" cy="90" rx="50" ry="30" fill="#2a1800"/>
-    <ellipse cx="160" cy="90" rx="40" ry="22" fill="#1a0e00"/>
-    <ellipse cx="190" cy="95" rx="25" ry="20" fill="#2a1800" opacity="0.7"/>
-    <!-- Pierre roulée -->
-    <circle cx="210" cy="88" r="22" fill="#3d2800" stroke="#6b4a1a" stroke-width="1.5"/>
-    <circle cx="210" cy="88" r="16" fill="#2e1c08"/>
-    <!-- Lumière sortant du tombeau -->
-    <path d="M140 90 L100 60 L130 65Z" fill="#f8e060" opacity="0.1"/>
-    <path d="M145 88 L110 55 L135 62Z" fill="#f8e060" opacity="0.15"/>
-    <!-- Linceul à l'intérieur -->
-    <rect x="128" y="85" width="30" height="10" rx="2" fill="#c8b890" opacity="0.3"/>
-    <!-- Ange assis -->
-    <rect x="128" y="72" width="8" height="18" rx="2" fill="#e8e8c0" opacity="0.6"/>
-    <circle cx="132" cy="69" r="5" fill="#f0f0d0" opacity="0.7"/>
-    <path d="M122 72 Q110 60 115 75" stroke="#e8e8c0" stroke-width="1.5" fill="none" opacity="0.5"/>
-    <path d="M142 72 Q154 60 149 75" stroke="#e8e8c0" stroke-width="1.5" fill="none" opacity="0.5"/>
-    <!-- Femmes -->
-    <rect x="55" y="85" width="7" height="25" rx="2" fill="#3d2800" opacity="0.8"/>
-    <circle cx="59" cy="82" r="5" fill="#5d3820" opacity="0.8"/>
-    <rect x="68" y="87" width="7" height="23" rx="2" fill="#4d3810" opacity="0.8"/>
-    <circle cx="72" cy="84" r="5" fill="#6b4a1a" opacity="0.8"/>
-    <text x="8" y="135" font-size="7" fill="#6b4a1a" opacity="0.6" font-style="italic">Luc 24</text>
-  </svg>`,
-
+  jesus_naissance:  BASE + 'tLuk0215Dore_TheNativity.jpg',
+  jesus_sermon:     BASE + 'rMat0507Dore_TheSermonOnTheMount.jpg',
+  jesus_priere:     BASE + 'rMat2640Dore_JesusPrayingInTheGarden.jpg',
+  jesus_croix:      BASE + 'tLuk2334Dore_TheCrucifixion.jpg',
+  jesus_resurrection: BASE + 'rMat2805Dore_TheResurrection.jpg',
+  jesus_emmaus:     BASE + 'tLuk2426Dore_JesusAndTheDisciplesGoingToEmmaus.jpg',
+  jesus_lazare:     BASE + 'uJoh1141Dore_ResurrectionOfLazarus.jpg',
+  jesus_entree:     BASE + 'rMat2107Dore_EntryOfJesusIntoJerusalem.jpg',
   // PAUL
-  paul_damas: `<svg viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg">
-    <rect width="320" height="140" fill="#080818"/>
-    <!-- Route de Damas -->
-    <rect x="0" y="0" width="320" height="75" fill="#0d1020"/>
-    <!-- Lumière aveuglante du ciel -->
-    <circle cx="160" cy="20" r="40" fill="white" opacity="0.15"/>
-    <circle cx="160" cy="20" r="25" fill="white" opacity="0.2"/>
-    <circle cx="160" cy="20" r="12" fill="white" opacity="0.35"/>
-    <!-- Rayons -->
-    <path d="M160 20 L80 75" stroke="white" stroke-width="2" opacity="0.3"/>
-    <path d="M160 20 L110 75" stroke="white" stroke-width="1.5" opacity="0.25"/>
-    <path d="M160 20 L140 75" stroke="white" stroke-width="1" opacity="0.2"/>
-    <path d="M160 20 L170 75" stroke="white" stroke-width="1" opacity="0.2"/>
-    <path d="M160 20 L200 75" stroke="white" stroke-width="1.5" opacity="0.25"/>
-    <path d="M160 20 L240 75" stroke="white" stroke-width="2" opacity="0.3"/>
-    <!-- Route -->
-    <path d="M0 75 Q80 68 160 72 Q240 76 320 68 L320 140 L0 140Z" fill="#1e1400"/>
-    <path d="M140 75 L150 140 L170 140 L180 75Z" fill="#2a1c00" opacity="0.5"/>
-    <!-- Paul renversé -->
-    <rect x="148" y="85" width="24" height="8" rx="2" fill="#3d2800" opacity="0.9"/>
-    <circle cx="140" cy="85" r="7" fill="#5d3820"/>
-    <!-- Bras tendus -->
-    <line x1="152" y1="88" x2="135" y2="78" stroke="#4d3810" stroke-width="3"/>
-    <line x1="172" y1="88" x2="190" y2="80" stroke="#4d3810" stroke-width="3"/>
-    <!-- Cheval renversé -->
-    <ellipse cx="210" cy="100" rx="35" ry="15" fill="#3d2800" opacity="0.7"/>
-    <rect x="235" y="85" width="8" height="25" rx="2" fill="#3d2800" opacity="0.7"/>
-    <!-- Compagnons stupéfaits -->
-    <rect x="40" y="80" width="7" height="25" rx="2" fill="#2a2030" opacity="0.7"/>
-    <circle cx="44" cy="77" r="5" fill="#3a3040" opacity="0.7"/>
-    <rect x="55" y="82" width="7" height="23" rx="2" fill="#2a2030" opacity="0.6"/>
-    <text x="8" y="135" font-size="7" fill="#6b4a1a" opacity="0.6" font-style="italic">Actes 9</text>
-  </svg>`,
-
+  paul_damas:       BASE + 'vAct0903Dore_ConversionOfSaul.jpg',
+  paul_ephese:      BASE + 'vAct1919Dore_St_PaulAtEphesus.jpg',
+  paul_naufrage:    BASE + 'vAct2743Dore_St_PaulShipwrecked.jpg',
+  paul_predication: BASE + 'w1Th0211Dore_St_PaulPreachingToTheThessalonians.jpg',
   // MARIE
-  marie_annonciation: `<svg viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg">
-    <rect width="320" height="140" fill="#1a1008"/>
-    <!-- Intérieur humble de Nazareth -->
-    <rect x="0" y="0" width="320" height="140" fill="#1a1008"/>
-    <!-- Sol et murs -->
-    <rect x="0" y="95" width="320" height="45" fill="#2a1800"/>
-    <!-- Fenêtre avec lumière -->
-    <rect x="220" y="20" width="60" height="80" rx="4" fill="#1a2840" stroke="#6b4a1a" stroke-width="1"/>
-    <rect x="225" y="25" width="50" height="70" rx="3" fill="#1a2840"/>
-    <path d="M225 25 L275 25 L275 65 Q250 55 225 65Z" fill="#e8c040" opacity="0.15"/>
-    <!-- Lumière divine entrant -->
-    <path d="M225 25 L160 95" stroke="#e8c040" stroke-width="1.5" opacity="0.2"/>
-    <path d="M250 20 L170 95" stroke="#f8e060" stroke-width="2" opacity="0.18"/>
-    <!-- Ange Gabriel -->
-    <rect x="200" y="40" width="10" height="45" rx="3" fill="#e8e8c0" opacity="0.7"/>
-    <circle cx="205" cy="36" r="7" fill="#f0f0d0" opacity="0.8"/>
-    <!-- Ailes de l'ange -->
-    <path d="M200 50 Q185 35 190 55" stroke="#e8e8a0" stroke-width="1.5" fill="none" opacity="0.7"/>
-    <path d="M210 50 Q225 35 220 55" stroke="#e8e8a0" stroke-width="1.5" fill="none" opacity="0.7"/>
-    <!-- Aureole de l'ange -->
-    <circle cx="205" cy="34" r="10" fill="none" stroke="#e8c040" stroke-width="0.8" opacity="0.5"/>
-    <!-- Marie agenouillée -->
-    <rect x="95" y="70" width="9" height="35" rx="3" fill="#2a3050"/>
-    <rect x="85" y="85" width="28" height="18" rx="3" fill="#1a2040"/>
-    <circle cx="100" cy="66" r="8" fill="#5d3820"/>
-    <!-- Voile de Marie -->
-    <path d="M92 68 Q100 62 108 68 L110 90 L90 90Z" fill="#2a3050" opacity="0.7"/>
-    <!-- Aureole de Marie -->
-    <circle cx="100" cy="64" r="12" fill="none" stroke="#e8c040" stroke-width="0.5" opacity="0.4"/>
-    <!-- Lys (symbole de pureté) -->
-    <path d="M140 95 L140 60" stroke="#4a6030" stroke-width="1.5"/>
-    <path d="M140 65 Q135 55 138 60" stroke="#6a8050" stroke-width="1" fill="none"/>
-    <path d="M140 65 Q145 55 142 60" stroke="#6a8050" stroke-width="1" fill="none"/>
-    <ellipse cx="138" cy="60" rx="4" ry="6" fill="#c8d890" opacity="0.7"/>
-    <ellipse cx="142" cy="58" rx="4" ry="6" fill="#d8e8a0" opacity="0.7"/>
-    <!-- Livre ouvert -->
-    <rect x="60" y="88" width="22" height="15" rx="1" fill="#c8b890" opacity="0.5"/>
-    <line x1="71" y1="88" x2="71" y2="103" stroke="#8b6830" stroke-width="0.5"/>
-    <text x="8" y="135" font-size="7" fill="#6b4a1a" opacity="0.6" font-style="italic">Luc 1</text>
-  </svg>`,
-
+  marie_annonciation: BASE + 'tLuk0126Dore_TheAnnunciation.jpg',
+  marie_nativite:   BASE + 'tLuk0215Dore_TheNativity.jpg',
+  marie_croix:      BASE + 'uJoh1902Dore_TheCrownOfThorns.jpg',
+  marie_magnificat: BASE + 'tLuk0126Dore_TheAnnunciation.jpg',
   // JOSEPH
-  joseph_songe: `<svg viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg">
-    <rect width="320" height="140" fill="#080818"/>
-    <!-- Nuit -->
-    <rect x="0" y="0" width="320" height="80" fill="#080818"/>
-    <!-- Étoiles -->
-    <circle cx="30" cy="15" r="1.5" fill="white" opacity="0.8"/>
-    <circle cx="70" cy="25" r="1" fill="white" opacity="0.7"/>
-    <circle cx="110" cy="10" r="2" fill="white" opacity="0.9"/>
-    <circle cx="200" cy="20" r="1.5" fill="white" opacity="0.8"/>
-    <circle cx="250" cy="12" r="1" fill="white" opacity="0.7"/>
-    <circle cx="290" cy="22" r="2" fill="white" opacity="0.8"/>
-    <!-- Soleil, lune, étoiles du songe -->
-    <circle cx="100" cy="25" r="12" fill="#e8c040" opacity="0.4"/>
-    <circle cx="160" cy="18" r="10" fill="#c8c8e0" opacity="0.4"/>
-    <circle cx="220" cy="25" r="6" fill="#f8e860" opacity="0.6"/>
-    <circle cx="240" cy="18" r="4" fill="#f8e860" opacity="0.5"/>
-    <circle cx="200" cy="30" r="3" fill="#f8e860" opacity="0.5"/>
-    <circle cx="180" cy="22" r="2" fill="#f8e860" opacity="0.6"/>
-    <circle cx="260" cy="28" r="3" fill="#f8e860" opacity="0.5"/>
-    <!-- Lignes de connexion — toutes s'inclinent -->
-    <path d="M100 37 Q130 50 160 28" stroke="#e8c040" stroke-width="0.8" opacity="0.3"/>
-    <path d="M160 28 Q190 40 220 31" stroke="#c8c8e0" stroke-width="0.8" opacity="0.3"/>
-    <!-- Sol désertique -->
-    <path d="M0 80 Q80 72 160 78 Q240 84 320 74 L320 140 L0 140Z" fill="#1e1400"/>
-    <!-- Tente et Joseph dormant -->
-    <path d="M60 80 L95 60 L130 80Z" fill="#2a1800" stroke="#4b3010" stroke-width="0.8"/>
-    <rect x="65" y="80" width="60" height="30" fill="#1e1000"/>
-    <!-- Joseph allongé -->
-    <rect x="70" y="92" width="50" height="10" rx="2" fill="#3d2800"/>
-    <circle cx="120" cy="90" r="6" fill="#5d3820"/>
-    <!-- Frères en arrière-plan -->
-    <rect x="175" y="82" width="6" height="22" rx="1" fill="#3d2800" opacity="0.6"/>
-    <rect x="190" y="80" width="6" height="24" rx="1" fill="#3d2800" opacity="0.6"/>
-    <rect x="205" y="82" width="6" height="22" rx="1" fill="#3d2800" opacity="0.6"/>
-    <text x="8" y="135" font-size="7" fill="#6b4a1a" opacity="0.6" font-style="italic">Gen. 37</text>
-  </svg>`,
-
-  // NOÉ
-  noe_construction: `<svg viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg">
-    <rect width="320" height="140" fill="#1a1008"/>
-    <rect x="0" y="0" width="320" height="70" fill="#0d1830"/>
-    <!-- Soleil levant -->
-    <circle cx="260" cy="35" r="20" fill="#e8a020" opacity="0.3"/>
-    <circle cx="260" cy="35" r="12" fill="#f8c040" opacity="0.4"/>
-    <!-- Collines -->
-    <path d="M0 70 Q80 50 140 60 Q180 67 220 55 Q270 40 320 65 L320 140 L0 140Z" fill="#1e1400"/>
-    <path d="M0 95 Q80 82 160 90 Q240 98 320 88 L320 140 L0 140Z" fill="#180e00"/>
-    <!-- Grande arche en construction -->
-    <rect x="60" y="55" width="180" height="50" rx="3" fill="#2a1800" stroke="#5c3d1a" stroke-width="1"/>
-    <rect x="70" y="42" width="160" height="16" rx="2" fill="#3d2800" stroke="#6b4a1a" stroke-width="0.8"/>
-    <!-- Échafaudages -->
-    <line x1="60" y1="105" x2="60" y2="40" stroke="#4d3810" stroke-width="1.5"/>
-    <line x1="240" y1="105" x2="240" y2="40" stroke="#4d3810" stroke-width="1.5"/>
-    <line x1="60" y1="70" x2="240" y2="70" stroke="#4d3810" stroke-width="1"/>
-    <line x1="60" y1="55" x2="240" y2="55" stroke="#4d3810" stroke-width="1"/>
-    <!-- Ouvriers / Noé et fils -->
-    <rect x="88" y="80" width="7" height="25" rx="2" fill="#4d3810"/>
-    <circle cx="92" cy="77" r="5" fill="#6b4a1a"/>
-    <rect x="148" y="75" width="7" height="30" rx="2" fill="#4d3810"/>
-    <circle cx="152" cy="72" r="5" fill="#6b4a1a"/>
-    <rect x="208" y="80" width="7" height="25" rx="2" fill="#4d3810"/>
-    <circle cx="212" cy="77" r="5" fill="#6b4a1a"/>
-    <!-- Outils -->
-    <line x1="155" y1="78" x2="165" y2="68" stroke="#8b6830" stroke-width="1.5"/>
-    <line x1="88" y1="80" x2="78" y2="72" stroke="#8b6830" stroke-width="1.5"/>
-    <text x="8" y="135" font-size="7" fill="#6b4a1a" opacity="0.6" font-style="italic">Gen. 6</text>
-  </svg>`
+  joseph_songe:     BASE + 'aGen3728Dore_JosephSoldByHisBrethren.jpg',
+  joseph_pharaon:   BASE + 'aGen4125Dore_JosephInterpretingPharaoh_sDream.jpg',
+  joseph_freres:    BASE + 'aGen4501Dore_JosephMakesHimselfKnownToHisBrethren.jpg',
+  joseph_egypte:    BASE + 'aGen4605Dore_JacobGoethIntoEgypt.jpg',
 };
 
 // ============================================================
@@ -787,10 +300,10 @@ const CHARACTERS = {
       {ref:'Gen 12:1-9', title:{fr:'L\'appel et le départ vers Canaan',en:'The call and departure to Canaan',mg:'Ny fiantsoana sy ny niala nankany Kanana'}, illus:'abr_appel',
        text:{fr:'À Haran, Dieu appelle Abram : "Va vers le pays que je te montrerai. Je ferai de toi une grande nation, je te bénirai, je rendrai ton nom grand et tu seras une source de bénédiction." À 75 ans, Abram part avec Saraï, Lot, et tous ses biens.',en:'At Haran, God calls Abram: "Go to the land I will show you. I will make you a great nation, I will bless you, I will make your name great and you will be a blessing." At 75, Abram leaves with Sarai, Lot, and all his possessions.',mg:'Tany Harana, niantso an\'i Abrama i Andriamanitra: "Mandehana ho any amin\'ny tany izay hasehoko anao." Tamin\'ny faha-75 taonany, niala i Abrama.'},
        hist:{fr:'La promesse à Abraham (Gen 12:3 : "en toi seront bénies toutes les familles de la terre") est citée par Paul (Gal 3:8) comme annonce anticipée de l\'Évangile.',en:'The promise to Abraham (Gen 12:3: "in you all families of the earth shall be blessed") is cited by Paul (Gal 3:8) as an advance announcement of the Gospel.',mg:'Ny teny fikasana tamin\'i Abrahama (Gen 12:3) dia voatonon\'i Paoly (Gal 3:8) ho fampahafantarana mialoha ny Filazantsara.'}},
-      {ref:'Gen 15', title:{fr:'L\'alliance de la nuit',en:'The covenant of the night',mg:'Ny fanekena tamin\'ny alina'}, illus:'abr_appel',
+      {ref:'Gen 15', title:{fr:'L\'alliance de la nuit',en:'The covenant of the night',mg:'Ny fanekena tamin\'ny alina'}, illus:'abr_alliance',
        text:{fr:'Abram s\'inquiète de ne pas avoir d\'héritier. Dieu le fait sortir et dit : "Regarde les étoiles et compte-les si tu le peux. Telle sera ta postérité." Puis Dieu conclut solennellement l\'alliance en passant entre les animaux coupés en deux sous forme de torche de feu.',en:'Abram worries about having no heir. God brings him outside and says: "Look at the stars and count them if you can. So shall your offspring be." Then God solemnly makes the covenant by passing between the cut animals as a flaming torch.',mg:'Nanana ahiahy i Abrama noho tsy nisiany mpandova. Nentin\'Andriamanitra nivoaka izy ka niteny: "Jereo ny kintana ka isao raha azonao isaina."'},
        hist:{fr:'Le rituel de l\'alliance par le passage entre des animaux partagés est attesté dans des textes akkadiens du IIème millénaire — Abraham utilise les codes juridiques de son époque.',en:'The covenant ritual of passing between divided animals is attested in Akkadian texts of the 2nd millennium — Abraham uses the legal codes of his time.',mg:'Ny fombam-panekena tamin\'ny nandalo teo anelanelan\'ny biby voaparaka dia voaporofo tamin\'ny lahatsoratra akkadiana.'}},
-      {ref:'Gen 17-18', title:{fr:'La naissance promise d\'Isaac',en:'The promised birth of Isaac',mg:'Ny nahaterahan\'i Isaka nampanantenaina'}, illus:'abr_appel',
+      {ref:'Gen 17-18', title:{fr:'La naissance promise d\'Isaac',en:'The promised birth of Isaac',mg:'Ny nahaterahan\'i Isaka nampanantenaina'}, illus:'abr_anges',
        text:{fr:'Abraham a 99 ans, Sara 90. Dieu renouvelle l\'alliance et annonce qu\'ils auront un fils dans un an. Trois visiteurs mystérieux arrivent à Mambré — Sara rit d\'incrédulité derrière la tente. Dieu dit : "Y a-t-il rien de trop difficile pour l\'Éternel ?"',en:'Abraham is 99, Sarah 90. God renews the covenant and announces they will have a son within a year. Three mysterious visitors arrive at Mamre — Sarah laughs in disbelief behind the tent. God says: "Is anything too hard for the Lord?"',mg:'I Abrahama 99 taona, i Sara 90. Havaozin\'Andriamanitra ny fanekena ka milaza hoe hiteraka zazalahy ao anatin\'ny taona iray izy ireo.'},
        hist:{fr:'La naissance d\'Isaac à cet âge est présentée comme un miracle de Dieu. Le nom Isaac (Yitzhak) vient du verbe rire (tsahaq) — en référence au rire de Sara.',en:'Isaac\'s birth at this age is presented as a miracle of God. The name Isaac (Yitzhak) comes from the verb to laugh (tsahaq) — referring to Sarah\'s laughter.',mg:'Ny nahaterahan\'i Isaka tamin\'io taona io dia asehon\'Andriamanitra ho fahagagana. Ny anaran\'i Isaka (Yitzhak) dia avy amin\'ny fidinana hoe "mihomehy".'}},
       {ref:'Gen 22', title:{fr:'Le sacrifice d\'Isaac — sommet de la foi',en:'The sacrifice of Isaac — summit of faith',mg:'Ny fanatitry ny zanak\'i Abrahama — tampon\'ny finoana'}, illus:'abr_isaac',
@@ -810,7 +323,7 @@ const CHARACTERS = {
       mg:'I Mosesy no mpaminany lehibe indrindra ao amin\'ny Testamenta Taloha. Notezaina tao amin\'ny tokontany Farao, nantsoina teo amin\'ny voarobelona mirehitra hanafaka ny vahoakany.'
     },
     events:[
-      {ref:'Ex 2:1-10', title:{fr:'Naissance et sauvetage sur le Nil',en:'Birth and rescue on the Nile',mg:'Nahaterahan\'i Mosesy sy nanavotana azy tamin\'ny Neily'}, illus:'moise_buisson',
+      {ref:'Ex 2:1-10', title:{fr:'Naissance et sauvetage sur le Nil',en:'Birth and rescue on the Nile',mg:'Nahaterahan\'i Mosesy sy nanavotana azy tamin\'ny Neily'}, illus:'moise_nil',
        text:{fr:'Pharaon ordonne de noyer tous les nouveau-nés hébreux mâles. Jokébed cache son fils 3 mois, puis le dépose dans une corbeille de papyrus sur le Nil. La fille de Pharaon le découvre et l\'adopte. Sa propre mère devient sa nourrice. Il est élevé comme prince d\'Égypte.',en:'Pharaoh orders all Hebrew male newborns drowned. Jochebed hides her son 3 months, then places him in a papyrus basket on the Nile. Pharaoh\'s daughter finds and adopts him. His own mother becomes his wet nurse. He is raised as a prince of Egypt.',mg:'Nasain\'ny Farao hotafinina ny zazalahy hebreo rehetra. Nafenin\'i Jokebed ny zanany 3 volana, dia napetrany tao amin\'ny sobika papirosy teo amin\'ny Neily.'},
        hist:{fr:'Le Nil était sacré pour les Égyptiens (dieu Hâpi). La légende du héros exposé sur l\'eau existait avant Moïse (Sargon d\'Akkad). Providence divine dans l\'usage des structures du monde.',en:'The Nile was sacred to Egyptians (god Hapi). The legend of the hero exposed on water predates Moses (Sargon of Akkad). Divine providence in the use of the world\'s structures.',mg:'Ny Neily dia masina ho an\'ny Egyptiana (andriamanitra Hâpi).'}},
       {ref:'Ex 3:1-15', title:{fr:'Le buisson ardent — révélation du nom divin',en:'The burning bush — revelation of the divine name',mg:'Ny voarobelona mirehitra — fanambarana ny anaran\'Andriamanitra'}, illus:'moise_buisson',
@@ -862,7 +375,7 @@ const CHARACTERS = {
       {ref:'Luc 2:1-20', title:{fr:'La naissance à Bethléem',en:'The birth at Bethlehem',mg:'Nahaterahan\'i Jesoa tany Betlehema'}, illus:'jesus_naissance',
        text:{fr:'Un décret de César Auguste ordonne un recensement. Joseph et Marie voyagent de Nazareth à Bethléem. Il n\'y a pas de place dans l\'hôtellerie. Marie met au monde son fils premier-né, l\'emmaillote et le couche dans une mangeoire. Des anges annoncent la nouvelle à des bergers qui accourent.',en:'A decree from Caesar Augustus orders a census. Joseph and Mary travel from Nazareth to Bethlehem. There is no room at the inn. Mary gives birth to her firstborn son, wraps him in cloths and places him in a manger. Angels announce the news to shepherds who hurry.',mg:'Nilaza fanisana i Aogososy Kaisara. Nandeha tany Betlehema i Josefa sy Maria. Niteraka ny zanany lahy voalohan-teraka i Maria ka nampandrian\'ny ao amin\'ny tranobe.'},
        hist:{fr:'La naissance de Jésus est datée de ~4-6 av. J.-C. par la plupart des historiens (le calendrier a une petite erreur de calcul). Bethléem accomplit la prophétie de Michée 5:1.',en:'Jesus\' birth is dated to ~4-6 BC by most historians (the calendar has a small calculation error). Bethlehem fulfills the prophecy of Micah 5:1.',mg:'Ny nahaterahan\'i Jesoa dia dataina ~4-6 tal. J.-K. araka ny mpahay tantara maro.'}},
-      {ref:'Matt 5-7', title:{fr:'Le Sermon sur la Montagne',en:'The Sermon on the Mount',mg:'Ny Toriteny teny an-tendrombohitra'}, illus:'jesus_naissance',
+      {ref:'Matt 5-7', title:{fr:'Le Sermon sur la Montagne',en:'The Sermon on the Mount',mg:'Ny Toriteny teny an-tendrombohitra'}, illus:'jesus_sermon',
        text:{fr:'"Heureux les pauvres en esprit, car le Royaume des cieux est à eux. Heureux les doux, car ils hériteront la terre..." Les Béatitudes, le Notre Père, l\'amour des ennemis, la règle d\'or — la plus grande allocution morale de l\'histoire humaine.',en:'"Blessed are the poor in spirit, for theirs is the kingdom of heaven. Blessed are the meek, for they shall inherit the earth..." The Beatitudes, the Lord\'s Prayer, love of enemies, the golden rule — the greatest moral address in human history.',mg:'"Sambatra ny malahelo am-panahy, fa azy ny Fanjakan\'ny lanitra."'},
        hist:{fr:'Le Sermon sur la Montagne (Matt 5-7) a influencé Gandhi, Martin Luther King, et des générations de penseurs moraux. Ses principes dépassent le cadre religieux pour toucher l\'universel.',en:'The Sermon on the Mount (Matt 5-7) influenced Gandhi, Martin Luther King, and generations of moral thinkers. Its principles transcend the religious framework to touch the universal.',mg:'Ny Toriteny teny an-tendrombohitra dia nisy fiantraikany tamin\'i Gandhi, Martin Luther King, sy taranaka maro.'}},
       {ref:'Luc 22-23', title:{fr:'La Passion et la Crucifixion',en:'The Passion and Crucifixion',mg:'Ny Filalisan\'i Jesoa sy ny fanomboana azy tamin\'ny hazo fijaliana'}, illus:'jesus_croix',
@@ -888,13 +401,13 @@ const CHARACTERS = {
       {ref:'Actes 9:1-19', title:{fr:'La conversion sur le chemin de Damas',en:'The conversion on the road to Damascus',mg:'Ny niovan\'i Paoly fo teo an-dalana mankany Damaskosy'}, illus:'paul_damas',
        text:{fr:'Saul part pour Damas avec des lettres pour arrêter les disciples. Soudain une lumière l\'enveloppe. Il tombe. "Saul, Saul, pourquoi me persécutes-tu ?" — "Qui es-tu, Seigneur ?" — "Je suis Jésus que tu persécutes." Aveugle 3 jours, il est baptisé par Ananias.',en:'Saul sets out for Damascus with letters to arrest disciples. Suddenly a light surrounds him. He falls. "Saul, Saul, why do you persecute me?" — "Who are you, Lord?" — "I am Jesus whom you persecute." Blind 3 days, he is baptized by Ananias.',mg:'Niainga nankany Damaskosy i Saoly mitondra taratasy hasambotra ny mpianatra.'},
        hist:{fr:'La conversion de Paul est l\'événement humain le plus décisif de l\'histoire du christianisme. Avant lui, le christianisme était une secte juive. Après lui, c\'est une foi universelle.',en:'Paul\'s conversion is the most decisive human event in Christian history. Before him, Christianity was a Jewish sect. After him, it is a universal faith.',mg:'Ny niovan\'i Paoly fo no zava-mitranga manan-danja indrindra tamin\'ny tantaran\'ny kristianisma.'}},
-      {ref:'Actes 13-14', title:{fr:'Premier voyage missionnaire',en:'First missionary journey',mg:'Ny diandalana misionary voalohany'}, illus:'paul_damas',
+      {ref:'Actes 13-14', title:{fr:'Premier voyage missionnaire',en:'First missionary journey',mg:'Ny diandalana misionary voalohany'}, illus:'paul_predication',
        text:{fr:'L\'Église d\'Antioche, sous l\'impulsion du Saint-Esprit, envoie Barnabas et Paul. Ils parcourent Chypre, puis la Galatie (Antioche de Pisidie, Iconium, Lystre, Derbé). Partout ils annoncent que Jésus est le Messie. Des synagogues se divisent. Des Églises naissent.',en:'The church of Antioch, moved by the Holy Spirit, sends Barnabas and Paul. They travel through Cyprus, then Galatia (Pisidian Antioch, Iconium, Lystra, Derbe). Everywhere they announce Jesus is the Messiah. Synagogues divide. Churches are born.',mg:'Ny Fiangonan\'i Antioka, notaoman\'ny Fanahy Masina, nampandeha an\'i Barnabasy sy Paoly.'},
        hist:{fr:'Le premier voyage missionnaire (~46-48 ap. J.-C.) introduit l\'Évangile en Asie Mineure (actuelle Turquie). Paul y fonde des Églises qui reçoivent plus tard ses lettres (Galates, peut-être).',en:'The first missionary journey (~46-48 AD) introduces the Gospel to Asia Minor (modern Turkey). Paul founds churches there which later receive his letters (Galatians, perhaps).',mg:'Ny diandalana misionary voalohany (~46-48 A.D.) dia nampiditra ny Filazantsara tany Azia Minora (Torkia ankehitriny).'}},
-      {ref:'1 Co 13', title:{fr:'L\'hymne à l\'amour',en:'The hymn to love',mg:'Ny hira amin\'ny fitiavana'}, illus:'paul_damas',
+      {ref:'1 Co 13', title:{fr:'L\'hymne à l\'amour',en:'The hymn to love',mg:'Ny hira amin\'ny fitiavana'}, illus:'paul_ephese',
        text:{fr:'"Si je parlais les langues des hommes et des anges, mais que je n\'aie pas l\'amour, je suis un airain qui résonne ou une cymbale qui retentit... L\'amour est patient, l\'amour est serviable... Il supporte tout, il croit tout, il espère tout, il endure tout. L\'amour ne finit jamais."',en:'"If I speak in the tongues of men or of angels, but do not have love, I am only a resounding gong or a clanging cymbal... Love is patient, love is kind... It always protects, always trusts, always hopes, always perseveres. Love never fails."',mg:'"Na dia miteny amin\'ny fitenin\'ny olona sy ny anjely aza aho, nefa tsy manana fitiavana, dia toy ny tantsahin\'ny varahina.'},
        hist:{fr:'Le chapitre 13 de la 1ère Lettre aux Corinthiens est l\'un des textes les plus cités au monde — lu dans d\'innombrables mariages, funérailles et cérémonies. Écrit ~55 ap. J.-C. depuis Éphèse.',en:'Chapter 13 of 1 Corinthians is one of the most quoted texts in the world — read at countless weddings, funerals and ceremonies. Written ~AD 55 from Ephesus.',mg:'Ny toko faha-13 amin\'ny 1 Korintianina dia isan\'ireo lahatsoratra voatonona indrindra eran-tany.'}},
-      {ref:'Actes 28', title:{fr:'Arrivée et prédication à Rome',en:'Arrival and preaching in Rome',mg:'Tonga sy nitory tany Roma'}, illus:'paul_damas',
+      {ref:'Actes 28', title:{fr:'Arrivée et prédication à Rome',en:'Arrival and preaching in Rome',mg:'Tonga sy nitory tany Roma'}, illus:'paul_naufrage',
        text:{fr:'Après deux ans de détention à Césarée et un naufrage en Méditerranée, Paul arrive à Rome. Il y vit deux ans sous garde militaire, "prêchant le Royaume de Dieu et enseignant ce qui concerne le Seigneur Jésus-Christ, avec une pleine liberté et sans obstacle."',en:'After two years of detention in Caesarea and a Mediterranean shipwreck, Paul arrives in Rome. He lives there two years under military guard, "proclaiming the kingdom of God and teaching about the Lord Jesus Christ with all boldness and without hindrance."',mg:'Taorian\'ny nianjerana roa taona tany Kaisarea sy ny fitsapana tamin\'ny ranomasina, tonga tany Roma i Paoly.'},
        hist:{fr:'La tradition dit que Paul fut décapité à Rome vers 67 ap. J.-C. sous Néron, sur la Via Ostia. La basilique Saint-Paul-hors-les-Murs marque son tombeau traditionnel.',en:'Tradition says Paul was beheaded in Rome around AD 67 under Nero, on the Via Ostia. The Basilica of Saint Paul Outside the Walls marks his traditional tomb.',mg:'Ny fomba amam-panaon\'ny olona dia milaza fa nogadraina tany Roma tokony ho 67 A.D. teo ambanin\'i Nerona i Paoly.'}}
     ]
@@ -940,10 +453,10 @@ const CHARACTERS = {
       {ref:'Gen 37:18-36', title:{fr:'Vendu par ses frères à Dotân',en:'Sold by his brothers at Dothan',mg:'Nivarotra azy ny rahalahiny tany Dotana'}, illus:'joseph_songe',
        text:{fr:'Les frères complotent de tuer Joseph. Ruben plaide pour lui — il est jeté dans une citerne. Des marchands ismaélites passent. Juda propose de le vendre plutôt que le tuer. Joseph est vendu pour 20 pièces d\'argent. Ils trempent sa tunique dans le sang d\'un bouc et la montrent à Jacob.',en:'Brothers plot to kill Joseph. Reuben pleads for him — he is thrown into a cistern. Ishmaelite merchants pass by. Judah proposes selling him rather than killing. Joseph is sold for 20 pieces of silver. They dip his tunic in goat\'s blood and show it to Jacob.',mg:'Nitarika hamono an\'i Josefa ny rahalahiny. Nivavaka ho azy i Robena — nazeriny tao am-pantsakana izy.'},
        hist:{fr:'20 sicles d\'argent était le tarif légal d\'un esclave au Bronze moyen (tablettes de Mari, ~1800 av. J.-C.). Ce prix exact dans la Bible témoigne d\'une connaissance précise du contexte historique.',en:'20 shekels of silver was the legal price of a slave in the Middle Bronze Age (Mari tablets, ~1800 BC). This exact price in the Bible shows precise knowledge of the historical context.',mg:'20 sekely volafotsy no vidin\'ny andevo tamin\'ny Bronze Afovoany (takelaka Mari, ~1800 tal. J.-K.).'}},
-      {ref:'Gen 41:37-57', title:{fr:'Vice-roi d\'Égypte',en:'Viceroy of Egypt',mg:'Tale Faharoa tany Egypta'}, illus:'joseph_songe',
+      {ref:'Gen 41:37-57', title:{fr:'Vice-roi d\'Égypte',en:'Viceroy of Egypt',mg:'Tale Faharoa tany Egypta'}, illus:'joseph_pharaon',
        text:{fr:'En prison, Joseph interprète les songes. Pharaon est troublé par ses deux rêves. Joseph est appelé. Il explique : 7 ans d\'abondance suivis de 7 ans de famine. Pharaon dit : "Puisque Dieu t\'a révélé tout cela, il n\'est personne d\'aussi intelligent et sage que toi." Il lui donne son anneau, des vêtements de lin et un collier d\'or.',en:'In prison, Joseph interprets dreams. Pharaoh is troubled by his two dreams. Joseph is called. He explains: 7 years of plenty followed by 7 years of famine. Pharaoh says: "Since God has made all this known to you, there is no one so discerning and wise as you." He gives him his ring, linen clothes and a gold chain.',mg:'Tao am-ponja, nandika ny nofy i Josefa. Nalahelo ny Farao noho ny nofiny roa.'},
        hist:{fr:'Des textes égyptiens mentionnent des famines sévères liées aux faibles crues du Nil. La fonction de "vizir" (second du Pharaon) est bien documentée sous le Moyen Empire (~2055-1650 av. J.-C.).',en:'Egyptian texts mention severe famines linked to weak Nile floods. The function of "vizier" (second to Pharaoh) is well documented under the Middle Kingdom (~2055-1650 BC).',mg:'Ny rakisoratra egyptiana dia milaza ny amin\'ny mosary mafy vokatry ny kely ny halon\'ny Neily.'}},
-      {ref:'Gen 45:1-15', title:{fr:'Le pardon — "Je suis Joseph"',en:'Forgiveness — "I am Joseph"',mg:'Ny famelan-keloka — "Izaho no Josefa"'}, illus:'joseph_songe',
+      {ref:'Gen 45:1-15', title:{fr:'Le pardon — "Je suis Joseph"',en:'Forgiveness — "I am Joseph"',mg:'Ny famelan-keloka — "Izaho no Josefa"'}, illus:'joseph_freres',
        text:{fr:'Après avoir éprouvé ses frères, Joseph ne peut plus se contenir. Il fait sortir tout le monde. Il pleure si fort que les Égyptiens l\'entendent. "Je suis Joseph ! Mon père est-il encore en vie ?" Ses frères sont stupéfaits. Il les serre dans ses bras : "Ce n\'est pas vous qui m\'avez envoyé ici, c\'est Dieu."',en:'After testing his brothers, Joseph can no longer control himself. He sends everyone out. He weeps so loudly the Egyptians hear. "I am Joseph! Is my father still living?" His brothers are stunned. He embraces them: "It was not you who sent me here, but God."',mg:'Taorian\'ny nitsapany ny rahalahiny, tsy naharetena intsony i Josefa. Nihomehy mafy izy ka ren\'ny Egyptiana.'},
        hist:{fr:'Ce récit de pardon est considéré par des psychologues et des théologiens comme le plus bel exemple de réconciliation dans toute la littérature mondiale. Joseph transforme la trahison en providentielles.',en:'This forgiveness narrative is considered by psychologists and theologians as the finest example of reconciliation in all world literature. Joseph transforms betrayal into providence.',mg:'Io tantaran\'ny famelan-keloka io dia atao hoe ohatra tsara indrindra amin\'ny fampihavanana ao amin\'ny literatioran\'izao tontolo izao.'}}
     ]
@@ -1029,7 +542,7 @@ function showChar(id) {
     const block = document.createElement('div');
     block.className = 'ev-block';
     block.innerHTML = `
-      <div class="ev-illustration">${ILLUS[ev.illus] || ''}</div>
+      <div class="ev-illustration">${ILLUS[ev.illus] ? `<img src="${ILLUS[ev.illus]}" alt="${t(ev.title)}" loading="lazy">` : ''}</div>
       <div class="ev-body">
         <div class="ev-ref">${ev.ref}</div>
         <div class="ev-title">${t(ev.title)}</div>
